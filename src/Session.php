@@ -41,7 +41,6 @@ namespace Trypta\Liquid {
 
         public function __construct(array $config = array())
         {
-            $this->app = $app;
             $this->config = array_merge($this->_config_defaults, $config);
         }
 
