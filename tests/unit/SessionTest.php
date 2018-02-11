@@ -20,7 +20,7 @@ class SessionTest extends TestCase
 {
     protected $session;
     
-    public function setUp()
+    public function _setUp()
     {
         $this->session = Session::getInstance(array());
         $this->session->start();
@@ -29,7 +29,7 @@ class SessionTest extends TestCase
     /**
      * @covers Trypta\Liquid\Session::__get
      */
-    public function testSession()
+    public function _testSession()
     {
         $_SESSION['test'] = 'value';
         $this->assetEquals($this->session->data['test'], PATH_SYSTEM . DIRECTORY_SEPARATOR . 'value');
