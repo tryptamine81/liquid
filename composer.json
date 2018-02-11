@@ -8,7 +8,7 @@
         }
     ],
     "autoload": {
-      "psr-4": {"Typta\\Liquid\\": "src/"}
+      "psr-4": {"Trypta\\Liquid\\": "src/"}
     },
     "require": {
 
