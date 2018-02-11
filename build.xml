@@ -82,15 +82,8 @@
     <mkdir dir="${basedir}/build/pdepend"/>
     <mkdir dir="${basedir}/build/phpdox"/>
   
-    <chmod file="${pdepend}" executable="true" />
-    <chmod file="${phpcpd}" executable="true" />
-    <chmod file="${phpcs}" executable="true" />
-    <chmod file="${phpcbf}" executable="true" />
-    <chmod file="${phpdox}" executable="true" />
-    <chmod file="${phploc}" executable="true" />
-    <chmod file="${phpmd}" executable="true" />
-    <chmod file="${phpunit}" executable="true" />
-  
+    <chmod perm="+x" dir="${basedir}/build/tools" includes="**/*.phar" />
+      
     <property name="prepare.done" value="true"/>
   </target>
 
