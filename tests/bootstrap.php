@@ -12,4 +12,6 @@ if (!is_dir(PATH_ROOT)) {
 }
 
 //  Initialise environment
+use Trypta\Liquid\Environment as Environment;
+
 Environment::getInstance(PATH_ROOT, PATH_ROOT, PATH_ROOT);
