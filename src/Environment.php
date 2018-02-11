@@ -120,7 +120,7 @@ class Environment
     {
         if (empty($root)) {
             if (empty($this->paths[self::PATH_ROOT])) {
-                throw new RuntimeException('Root path is not set');
+                throw new \RuntimeException('Root path is not set');
             }
         } else {
             $this->paths[self::PATH_ROOT] = $root;
@@ -128,7 +128,7 @@ class Environment
 
         if (empty($system)) {
             if (empty($this->paths[self::PATH_SYSTEM])) {
-                throw new RuntimeException('System path is not set');
+                throw new \RuntimeException('System path is not set');
             }
         } else {
             $this->paths[self::PATH_SYSTEM] = $system;
@@ -136,7 +136,7 @@ class Environment
 
         if (empty($library)) {
             if (empty($this->paths[self::PATH_LIB])) {
-                throw new RuntimeException('System path is not set');
+                throw new \RuntimeException('System path is not set');
             }
         } else {
             $this->paths[self::PATH_LIB] = $library;
