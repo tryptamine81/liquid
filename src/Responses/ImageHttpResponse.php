@@ -2,7 +2,7 @@
 
 /**
  * Contains \Liquid\Core\Responses\ImageHttpResponse Class
- * 
+ *
  * @author Sam Jones <jonesy at cityvinyl.co.uk>
  * @since version 0.0.1
  *
@@ -27,13 +27,13 @@ namespace Trypta\Liquid\Responses {
 
     /**
      * Sends an image as an http response
-     * 
+     *
      * @package Liquid Framework
      * @subpackage Core
      * @category Response
      */
-    class ImageHttpResponse extends PassThruHttpResponse {
-        
+    class ImageHttpResponse extends PassThruHttpResponse
+    {
     }
 
 }

@@ -7,17 +7,18 @@
  */
 
 use PHPUnit\Framework\TestCase;
+use Trypta\Liquid\Environment as Environment;
 
 /**
  * Description of EnvironmentTest
  *
  * @author Jonesy
  */
-class EnvironmentTest extends TestCase {
-    
-    public function testEnvironment()
+class EnvironmentTest extends TestCase
+{
+    public function testEnvironmentSingletonInstantiation()
     {
-        $this->assertEquals(0, 0);
+        $env = Environment::getInstance();
+        $this->assertEquals(get_class($env), 'Environment');
     }
-    
 }

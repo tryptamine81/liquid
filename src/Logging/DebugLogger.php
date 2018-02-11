@@ -20,7 +20,7 @@
 
 /**
  * Describes a debug logger instance
- * 
+ *
  * @since version 0.0.1
  * @author Sam Jones <jonesy at cityvinyl.co.uk>
  */
@@ -34,7 +34,6 @@ namespace Trypta\Liquid\Logging;
  * @subpackage Logging
  * @category Debug
  */
-class DebugLogger extends AbstractLogger implements \Psr\Log\LoggerInterface {
-    
+class DebugLogger extends AbstractLogger implements \Psr\Log\LoggerInterface
+{
 }
-

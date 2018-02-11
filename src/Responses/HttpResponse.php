@@ -2,7 +2,7 @@
 
 /**
  * Describes a HttpResponse
- * 
+ *
  * @since version 0.0.1
  * @author Sam Jones <jonesy at cityvinyl.co.uk>
  */
@@ -158,7 +158,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Valid HTTP Response Header Keys
-     * 
+     *
      * @static
      * @access protected
      * @var array $_validHeaders
@@ -187,7 +187,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Contains a list of HTTP response headers to be sent
-     * 
+     *
      * @access protected
      * @var array $_headers
      */
@@ -195,7 +195,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Contains a list of cookies to send with this response
-     * 
+     *
      * @access protected
      * @var array $_cookies
      */
@@ -203,7 +203,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Contains a list of string content to send with this response
-     * 
+     *
      * @access protected
      * @var array $_content
      */
@@ -211,9 +211,9 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * HTTP Response Status Code
-     * 
+     *
      * Use class constants: HttpResponse::STATUS_*
-     * 
+     *
      * @access protected
      * @var int $_status
      */
@@ -221,7 +221,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * True if the headers have already been sent
-     * 
+     *
      * @access protected
      * @var boolean $_headersSent
      */
@@ -229,7 +229,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
     
     /**
      * Minify Output Flag
-     * 
+     *
      * @access protected
      * @var boolean $minify
      */
@@ -237,7 +237,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
     
     /**
      * Get response as string
-     * 
+     *
      * @access public
      */
     public function __toString()
@@ -247,7 +247,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Send and flush the content buffer
-     * 
+     *
      * @access public
      */
     public function flush()
@@ -258,7 +258,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
     
     /**
      * Clears the content buffer
-     * 
+     *
      * @access public
      */
     public function clear()
@@ -268,7 +268,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
     
     /**
      * Sends headers and then content via parent::send()
-     * 
+     *
      * @access public
      */
     public function send()
@@ -279,16 +279,15 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Sends the HTTP response headers if not sent already
-     * 
+     *
      * @todo extend cookie implementation to use all php setcookie variables
-     * 
+     *
      * @access public
      */
     public function sendHeaders()
     {
         //  return now if headers already sent
-        if ($this->_headersSent)
-        {
+        if ($this->_headersSent) {
             return;
         }
 
@@ -296,14 +295,12 @@ class HttpResponse extends BaseResponse implements ResponseInterface
         header("HTTP/1.1 " . $this->_status . ' ' . self::$_statusText[$this->_status]);
 
         //  Send headers
-        foreach ($this->_headers as $key => $value)
-        {
+        foreach ($this->_headers as $key => $value) {
             header($key . ": " . $value);
         }
 
         //  Send cookies
-        foreach ($this->_cookies as $name => $info)
-        {
+        foreach ($this->_cookies as $name => $info) {
             setcookie($name, $info['value'], $info['expire']);
         }
 
@@ -313,9 +310,9 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Sets the HTTP status to be sent with this response
-     * 
+     *
      * Use class constants: HttpResponse::STATUS_*
-     * 
+     *
      * @access public
      * @param int $status
      */
@@ -326,9 +323,9 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Sets a HTTP response header value, only valid HTTP response headers
-     * should be used, an InvalidArgumentException will be throw if the 
+     * should be used, an InvalidArgumentException will be throw if the
      * header name is invalid and/or not supported
-     * 
+     *
      * @access public
      * @param string $key HTTP header name
      * @param mixed $value Value to set
@@ -336,12 +333,10 @@ class HttpResponse extends BaseResponse implements ResponseInterface
      */
     public function setHeader($key, $value)
     {
-        if($this->_headersSent)
-        {
+        if ($this->_headersSent) {
             throw new RuntimeException('Cannot set header, headers already sent!');
         }
-        if (!in_array($key, self::$_validHeaders))
-        {
+        if (!in_array($key, self::$_validHeaders)) {
             throw new \InvalidArgumentException('Invalid HTTP Header: ' . $key);
         }
         $this->_headers[$key] = $value;
@@ -349,25 +344,23 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Un-sets a HTTP response header for this response
-     * 
+     *
      * @access public
      * @param string $key HTTP Header name
      */
     public function unsetHeader($key)
     {
-        if($this->_headersSent)
-        {
+        if ($this->_headersSent) {
             throw new RuntimeException('Cannot unset header, headers already sent!');
         }
-        if (array_key_exists($key, $this->_headers))
-        {
+        if (array_key_exists($key, $this->_headers)) {
             unset($this->_headers[$Key]);
         }
     }
 
     /**
      * Returns the array of header data
-     * 
+     *
      * @access public
      * @return array
      */
@@ -378,7 +371,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Sets a cookie value for this response
-     * 
+     *
      * @access public
      * @param string $name Cookie name
      * @param mixed $value Cookie value
@@ -386,8 +379,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
      */
     public function setCookie($name, $value, $expires)
     {
-        if($this->_headersSent)
-        {
+        if ($this->_headersSent) {
             throw new RuntimeException('Cannot set cookie, headers already sent!');
         }
         $this->_cookies[$name] = array('value' => $value, 'expires' => $expires);
@@ -395,25 +387,23 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Un-sets a cookie value for this response
-     * 
+     *
      * @access public
      * @param string $name
      */
     public function unsetCookie($name)
     {
-        if($this->_headersSent)
-        {
+        if ($this->_headersSent) {
             throw new RuntimeException('Cannot unset cookie, headers already sent!');
         }
-        if (array_key_exists($name, $this->_cookies))
-        {
+        if (array_key_exists($name, $this->_cookies)) {
             unset($this->_cookies[$name]);
         }
     }
 
     /**
      * Appends a content variable
-     * 
+     *
      * @access public
      * @param mixed $content The content to append
      */
@@ -424,7 +414,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
 
     /**
      * Prepends a content variable
-     * 
+     *
      * @access public
      * @param mixed $content The content to prepend
      */
@@ -434,8 +424,8 @@ class HttpResponse extends BaseResponse implements ResponseInterface
     }
 
     /**
-     * Sets a content variable 
-     * 
+     * Sets a content variable
+     *
      * @access public
      * @param mixed $content The content
      */
@@ -446,7 +436,7 @@ class HttpResponse extends BaseResponse implements ResponseInterface
     
     /**
      * Turn minify on (true) or off (false)
-     * 
+     *
      * @access public
      * @param boolean $bool On/Off
      */
@@ -454,5 +444,4 @@ class HttpResponse extends BaseResponse implements ResponseInterface
     {
         $this->minify = (bool) $bool;
     }
-
 }

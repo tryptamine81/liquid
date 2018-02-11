@@ -20,10 +20,8 @@
 
 namespace Trypta\Liquid\Traits {
 
-    trait Observer {
-    
-        
-        
+    trait Observer
+    {
     }
 
 }

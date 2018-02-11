@@ -2,23 +2,20 @@
 
 namespace Trypta\Liquid\UI;
 
-class Element {
-
+class Element
+{
     protected $content = array();
     protected $parent = false;
 
     public function __construct()
     {
-        
     }
 
     public function __toString()
     {
         $content = '';
-        foreach ($this->content as $key => $chunk)
-        {
-            switch (true)
-            {
+        foreach ($this->content as $key => $chunk) {
+            switch (true) {
                 case is_object($chunk) && is_a($chunk, 'XTemplate'):
                     $content .= $chunk->text('main');
                     break;
@@ -46,7 +43,7 @@ class Element {
 
     /**
      * Sets the parent tag
-     * 
+     *
      * @access public
      * @param cwElement $parent
      * @return \cwElement
@@ -59,7 +56,7 @@ class Element {
 
     /**
      * Returns this tags parent or false if none
-     * 
+     *
      * @access public
      * @return \cwElement|false
      */
@@ -71,12 +68,10 @@ class Element {
 
     public function append($content)
     {
-        if (!$content)
-        {
+        if (!$content) {
             return $this;
         }
-        if ($content instanceof cwHtmlTag)
-        {
+        if ($content instanceof cwHtmlTag) {
             $content->setParent($this);
         }
         array_push($this->content, $content);
@@ -85,12 +80,10 @@ class Element {
     
     public function prepend($content)
     {
-        if (!$content)
-        {
+        if (!$content) {
             return $this;
         }
-        if ($content instanceof cwHtmlTag)
-        {
+        if ($content instanceof cwHtmlTag) {
             $content->setParent($this);
         }
         array_unshift($this->content, $content);
@@ -99,8 +92,7 @@ class Element {
     
     public function html($content = false)
     {
-        if($content !== false)
-        {
+        if ($content !== false) {
             $this->content = array($content);
             return $this;
         } else {
@@ -127,11 +119,9 @@ class Element {
     
     public function each(callable $method)
     {
-        foreach($this->content as $key => $content)
-        {
+        foreach ($this->content as $key => $content) {
             $this->Content[$key] = $method($content);
         }
         return $this;
     }
-    
 }

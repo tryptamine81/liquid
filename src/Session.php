@@ -25,8 +25,8 @@ namespace Trypta\Liquid {
      *
      * @author Jonesy
      */
-    class Session {
-
+    class Session
+    {
         const CONFIG_SECTION = 'system.session';
 
         private $_config_defaults = array(
@@ -54,12 +54,10 @@ namespace Trypta\Liquid {
 
         public function __get($name)
         {
-            if ($name == 'data')
-            {
+            if ($name == 'data') {
                 return $_SESSION;
             }
         }
-
     }
 
 }

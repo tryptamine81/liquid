@@ -25,6 +25,6 @@ namespace Trypta\Liquid\Logging;
  *
  * @author Jonesy
  */
-abstract class AbstractLoggerStorage {
-    
+abstract class AbstractLoggerStorage
+{
 }

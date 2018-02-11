@@ -8,7 +8,7 @@ namespace Trypta\Liquid\Responses;
 
 /**
  * Sends a file to the browser as a download
- * 
+ *
  * @package Fashion Interiors
  * @subpackage Core
  * @category Response
@@ -24,9 +24,7 @@ class PassThruHttpResponse extends HttpResponse
     
     public function send()
     {
-        
-        if(!file_exists($this->file))
-        {
+        if (!file_exists($this->file)) {
             $this->setStatus(HttpResponse::STATUS_NOT_FOUND);
             $this->sendHeaders();
             return;
@@ -40,7 +38,5 @@ class PassThruHttpResponse extends HttpResponse
         $fp = fopen($this->file, 'r');
         fpassthru($fp);
         fclose($fp);
-
     }
-
 }

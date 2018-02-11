@@ -21,7 +21,8 @@ namespace Trypta\Liquid {
      * License: LGPL / BSD - see license.txt
      * Changelog: see changelog.txt
      */
-    class XTemplate {
+    class XTemplate
+    {
         /**
          * Properties
          */
@@ -361,12 +362,10 @@ namespace Trypta\Liquid {
             // From SF Feature request 1202027
             // Kenneth Kalmer
             $this->tpldir = $tpldir;
-            if (defined('XTPL_DIR') && empty($this->tpldir))
-            {
+            if (defined('XTPL_DIR') && empty($this->tpldir)) {
                 $this->tpldir = XTPL_DIR;
             }
-            if (is_array($files))
-            {
+            if (is_array($files)) {
                 $this->files = $files;
             }
             $this->mainblock = $mainblock;
@@ -384,8 +383,7 @@ namespace Trypta\Liquid {
             $this->filevars = array();
             $this->filevar_parent = array();
             $this->filecache = array();
-            if ($autosetup)
-            {
+            if ($autosetup) {
                 $this->setup();
             }
         }
@@ -407,13 +405,11 @@ namespace Trypta\Liquid {
             $this->filevar_delim = "/" . $this->tag_start_delim . "FILE\s*" . $this->tag_start_delim . "([A-Za-z0-9\._]+?)" . $this->comment_preg . $this->tag_end_delim . $this->comment_preg . $this->tag_end_delim . "/m";
             // regexp for file includes w/ newlines
             $this->filevar_delim_nl = "/^\s*" . $this->tag_start_delim . "FILE\s*" . $this->tag_start_delim . "([A-Za-z0-9\._]+?)" . $this->comment_preg . $this->tag_end_delim . $this->comment_preg . $this->tag_end_delim . "\s*\n/m";
-            if (empty($this->filecontents))
-            {
+            if (empty($this->filecontents)) {
                 // read in template file
                 $this->filecontents = $this->_r_getfile($this->filename);
             }
-            if ($add_outer)
-            {
+            if ($add_outer) {
                 $this->_add_outer_block();
             }
             // preprocess some stuff
@@ -450,25 +446,19 @@ namespace Trypta\Liquid {
          */
         public function assign($name, $val = '', $reset_array = true)
         {
-            if (is_array($name))
-            {
-                foreach ($name as $k => $v)
-                {
+            if (is_array($name)) {
+                foreach ($name as $k => $v) {
                     $this->vars[$k] = $v;
                 }
-            } elseif (is_array($val))
-            {
+            } elseif (is_array($val)) {
                 // Clear the existing values
-                if ($reset_array)
-                {
+                if ($reset_array) {
                     $this->vars[$name] = array();
                 }
-                foreach ($val as $k => $v)
-                {
+                foreach ($val as $k => $v) {
                     $this->vars[$name][$k] = $v;
                 }
-            } else
-            {
+            } else {
                 $this->vars[$name] = $val;
             }
         }
@@ -482,14 +472,11 @@ namespace Trypta\Liquid {
          */
         public function assign_file($name, $val = '')
         {
-            if (is_array($name))
-            {
-                foreach ($name as $k => $v)
-                {
+            if (is_array($name)) {
+                foreach ($name as $k => $v) {
                     $this->_assign_file_sub($k, $v);
                 }
-            } else
-            {
+            } else {
                 $this->_assign_file_sub($name, $val);
             }
         }
@@ -502,14 +489,11 @@ namespace Trypta\Liquid {
          */
         public function parse($bname)
         {
-            if (isset($this->preparsed_blocks[$bname]))
-            {
+            if (isset($this->preparsed_blocks[$bname])) {
                 $copy = $this->preparsed_blocks[$bname];
-            } elseif (isset($this->blocks[$bname]))
-            {
+            } elseif (isset($this->blocks[$bname])) {
                 $copy = $this->blocks[$bname];
-            } elseif ($this->_ignore_missing_blocks)
-            {
+            } elseif ($this->_ignore_missing_blocks) {
                 // ------------------------------------------------------
                 // NW : 17 Oct 2002. Added default of ignore_missing_blocks
                 //      to allow for generalised processing where some
@@ -519,13 +503,11 @@ namespace Trypta\Liquid {
                 // JRC: 3/1/2003 added set error to ignore missing functionality
                 $this->_set_error("parse: blockname [$bname] does not exist");
                 return;
-            } else
-            {
+            } else {
                 $this->_set_error("parse: blockname [$bname] does not exist");
             }
             /* from there we should have no more {FILE } directives */
-            if (!isset($copy))
-            {
+            if (!isset($copy)) {
                 die('Block: ' . $bname);
             }
             $copy = preg_replace($this->filevar_delim_nl, '', $copy);
@@ -533,30 +515,24 @@ namespace Trypta\Liquid {
             /* find & replace variables+blocks */
             preg_match_all("|" . $this->tag_start_delim . "([A-Za-z0-9\._]+?" . $this->comment_preg . ")" . $this->tag_end_delim . "|", $copy, $var_array);
             $var_array = $var_array[1];
-            foreach ($var_array as $k => $v)
-            {
+            foreach ($var_array as $k => $v) {
                 // Are there any comments in the tags {tag#a comment for documenting the template}
                 $any_comments = explode('#', $v);
                 $v = rtrim($any_comments[0]);
-                if (sizeof($any_comments) > 1)
-                {
+                if (sizeof($any_comments) > 1) {
                     $comments = $any_comments[1];
-                } else
-                {
+                } else {
                     $comments = '';
                 }
                 $sub = explode('.', $v);
-                if ($sub[0] == '_BLOCK_')
-                {
+                if ($sub[0] == '_BLOCK_') {
                     unset($sub[0]);
                     $bname2 = implode('.', $sub);
                     // trinary operator eliminates assign error in E_ALL reporting
                     $var = isset($this->parsed_blocks[$bname2]) ? $this->parsed_blocks[$bname2] : null;
                     $nul = (!isset($this->_null_block[$bname2])) ? $this->_null_block[''] : $this->_null_block[$bname2];
-                    if ($var === '')
-                    {
-                        if ($nul == '')
-                        {
+                    if ($var === '') {
+                        if ($nul == '') {
                             // -----------------------------------------------------------
                             // Removed requirement for blocks to be at the start of string
                             // -----------------------------------------------------------
@@ -564,15 +540,12 @@ namespace Trypta\Liquid {
                             // Now blocks don't need to be at the beginning of a line,
                             //$copy=preg_replace("/\s*" . $this->tag_start_delim . $v . $this->tag_end_delim . "\s*\n*/m","",$copy);
                             $copy = preg_replace("|" . $this->tag_start_delim . $v . $this->tag_end_delim . "|m", '', $copy);
-                        } else
-                        {
+                        } else {
                             $copy = preg_replace("|" . $this->tag_start_delim . $v . $this->tag_end_delim . "|m", "$nul", $copy);
                         }
-                    } else
-                    {
+                    } else {
                         //$var = trim($var);
-                        switch (true)
-                        {
+                        switch (true) {
                             case preg_match('/^\n/', $var) && preg_match('/\n$/', $var):
                                 $var = substr($var, 1, -1);
                                 break;
@@ -591,27 +564,21 @@ namespace Trypta\Liquid {
                         //$var = preg_quote($var);
                         $var = str_replace('\\|', '|', $var);
                         $copy = preg_replace("|" . $this->tag_start_delim . $v . $this->tag_end_delim . "|m", "$var", $copy);
-                        if (preg_match('/^\n/', $copy) && preg_match('/\n$/', $copy))
-                        {
+                        if (preg_match('/^\n/', $copy) && preg_match('/\n$/', $copy)) {
                             $copy = substr($copy, 1, -1);
                         }
                     }
-                } else
-                {
+                } else {
                     $var = $this->vars;
-                    foreach ($sub as $v1)
-                    {
+                    foreach ($sub as $v1) {
                         // NW 4 Oct 2002 - Added isset and is_array check to avoid NOTICE messages
                         // JC 17 Oct 2002 - Changed EMPTY to stlen=0
                         //                if (empty($var[$v1])) { // this line would think that zeros(0) were empty - which is not true
-                        if (!isset($var[$v1]) || (!is_array($var[$v1]) && strlen($var[$v1]) == 0))
-                        {
+                        if (!isset($var[$v1]) || (!is_array($var[$v1]) && strlen($var[$v1]) == 0)) {
                             // Check for constant, when variable not assigned
-                            if (defined($v1))
-                            {
+                            if (defined($v1)) {
                                 $var[$v1] = constant($v1);
-                            } else
-                            {
+                            } else {
                                 $var[$v1] = null;
                             }
                         }
@@ -619,8 +586,7 @@ namespace Trypta\Liquid {
                     }
                     $nul = (!isset($this->_null_string[$v])) ? ($this->_null_string[""]) : ($this->_null_string[$v]);
                     $var = (!isset($var)) ? $nul : $var;
-                    if ($var === '')
-                    {
+                    if ($var === '') {
                         // -----------------------------------------------------------
                         // Removed requriement for blocks to be at the start of string
                         // -----------------------------------------------------------
@@ -636,25 +602,20 @@ namespace Trypta\Liquid {
                     //$var = preg_quote($var);
                     $var = str_replace('\\|', '|', $var);
                     $copy = preg_replace("|" . $this->tag_start_delim . $v . "( ?#" . $comments . ")?" . $this->tag_end_delim . "|m", "$var", $copy);
-                    if (preg_match('/^\n/', $copy) && preg_match('/\n$/', $copy))
-                    {
+                    if (preg_match('/^\n/', $copy) && preg_match('/\n$/', $copy)) {
                         $copy = substr($copy, 1);
                     }
                 }
             }
-            if (isset($this->parsed_blocks[$bname]))
-            {
+            if (isset($this->parsed_blocks[$bname])) {
                 $this->parsed_blocks[$bname] .= $copy;
-            } else
-            {
+            } else {
                 $this->parsed_blocks[$bname] = $copy;
             }
             /* reset sub-blocks */
-            if ($this->_autoreset && (!empty($this->sub_blocks[$bname])))
-            {
+            if ($this->_autoreset && (!empty($this->sub_blocks[$bname]))) {
                 reset($this->sub_blocks[$bname]);
-                foreach ($this->sub_blocks[$bname] as $k => $v)
-                {
+                foreach ($this->sub_blocks[$bname] as $k => $v) {
                     $this->reset($v);
                 }
             }
@@ -668,13 +629,10 @@ namespace Trypta\Liquid {
          */
         public function rparse($bname)
         {
-            if (!empty($this->sub_blocks[$bname]))
-            {
+            if (!empty($this->sub_blocks[$bname])) {
                 reset($this->sub_blocks[$bname]);
-                foreach ($this->sub_blocks[$bname] as $k => $v)
-                {
-                    if (!empty($v))
-                    {
+                foreach ($this->sub_blocks[$bname] as $k => $v) {
+                    if (!empty($v)) {
                         $this->rparse($v);
                     }
                 }
@@ -706,10 +664,8 @@ namespace Trypta\Liquid {
          */
         public function array_loop($bname, $var, &$values)
         {
-            if (is_array($values))
-            {
-                foreach ($values as $v)
-                {
+            if (is_array($values)) {
+                foreach ($values as $v) {
                     $this->insert_loop($bname, $var, $v);
                 }
             }
@@ -725,8 +681,7 @@ namespace Trypta\Liquid {
         public function text($bname = '')
         {
             $text = '';
-            if ($this->debug && $this->output_type == 'HTML')
-            {
+            if ($this->debug && $this->output_type == 'HTML') {
                 // JC 20/11/02 echo the template filename if in development as
                 // html comment
                 $text .= '<!-- XTemplate: ' . realpath($this->filename) . " -->\n";
@@ -759,8 +714,7 @@ namespace Trypta\Liquid {
          */
         public function out_file($bname, $fname)
         {
-            if (!empty($bname) && !empty($fname) && is_writeable($fname))
-            {
+            if (!empty($bname) && !empty($fname) && is_writeable($fname)) {
                 $fp = fopen($fname, 'w');
                 fwrite($fp, $this->text($bname));
                 fclose($fp);
@@ -870,8 +824,7 @@ namespace Trypta\Liquid {
         public function scan_globals()
         {
             reset($GLOBALS);
-            foreach ($GLOBALS as $k => $v)
-            {
+            foreach ($GLOBALS as $k => $v) {
                 $GLOB[$k] = $v;
             }
             /**
@@ -892,10 +845,8 @@ namespace Trypta\Liquid {
         {
             // JRC: 3/1/2003 Added ouptut wrapper and detection of output type for error message output
             $retval = false;
-            if ($this->_error != '')
-            {
-                switch ($this->output_type)
-                {
+            if ($this->_error != '') {
+                switch ($this->output_type) {
                     case 'HTML':
                     case 'html':
                         $retval = '<b>[XTemplate]</b><ul>' . nl2br(str_replace('* ', '<li>', str_replace(" *\n", "</li>\n", $this->_error))) . '</ul>';
@@ -925,23 +876,19 @@ namespace Trypta\Liquid {
         {
             $blocks = array();
             $con2 = explode($this->block_start_delim, $con);
-            if (!empty($parentblock))
-            {
+            if (!empty($parentblock)) {
                 $block_names = explode('.', $parentblock);
                 $level = sizeof($block_names);
-            } else
-            {
+            } else {
                 $block_names = array();
                 $level = 0;
             }
             // JRC 06/04/2005 Added block comments (on BEGIN or END) <!-- BEGIN: block_name#Comments placed here -->
             //$patt = "($this->block_start_word|$this->block_end_word)\s*(\w+)\s*$this->block_end_delim(.*)";
             $patt = "(" . $this->block_start_word . "|" . $this->block_end_word . ")\s*(\w+)" . $this->comment_preg . "\s*" . $this->block_end_delim . "(.*)";
-            foreach ($con2 as $k => $v)
-            {
+            foreach ($con2 as $k => $v) {
                 $res = array();
-                if (preg_match_all("/$patt/ims", $v, $res, PREG_SET_ORDER))
-                {
+                if (preg_match_all("/$patt/ims", $v, $res, PREG_SET_ORDER)) {
                     // $res[0][1] = BEGIN or END
                     // $res[0][2] = block name
                     // $res[0][3] = comment
@@ -950,8 +897,7 @@ namespace Trypta\Liquid {
                     $block_name = $res[0][2];
                     $comment = $res[0][3];
                     $content = $res[0][4];
-                    if (strtoupper($block_word) == $this->block_start_word)
-                    {
+                    if (strtoupper($block_word) == $this->block_start_word) {
                         $parent_name = implode('.', $block_names);
                         // add one level - array("main","table","row")
                         $block_names[++$level] = $block_name;
@@ -967,20 +913,17 @@ namespace Trypta\Liquid {
                         $this->sub_blocks[$parent_name][] = $cur_block_name;
                         // store sub block names for autoresetting
                         $this->sub_blocks[$cur_block_name][] = '';
-                    } else if (strtoupper($block_word) == $this->block_end_word)
-                    {
+                    } elseif (strtoupper($block_word) == $this->block_end_word) {
                         unset($block_names[$level--]);
                         $parent_name = implode('.', $block_names);
                         // add rest of block to parent block
                         $blocks[$parent_name] .= $content;
                     }
-                } else
-                {
+                } else {
                     // no block delimiters found
                     // Saves doing multiple implodes - less overhead
                     $tmp = implode('.', $block_names);
-                    if ($k)
-                    {
+                    if ($k) {
                         $blocks[$tmp] .= $this->block_start_delim;
                     }
                     // trinary operator eliminates assign error in E_ALL reporting
@@ -999,30 +942,22 @@ namespace Trypta\Liquid {
          */
         private function _assign_file_sub($name, $val)
         {
-            if (isset($this->filevar_parent[$name]))
-            {
-                if ($val != '')
-                {
+            if (isset($this->filevar_parent[$name])) {
+                if ($val != '') {
                     $val = $this->_r_getfile($val);
-                    foreach ($this->filevar_parent[$name] as $parent)
-                    {
-                        if (isset($this->preparsed_blocks[$parent]) && !isset($this->filevars[$name]))
-                        {
+                    foreach ($this->filevar_parent[$name] as $parent) {
+                        if (isset($this->preparsed_blocks[$parent]) && !isset($this->filevars[$name])) {
                             $copy = $this->preparsed_blocks[$parent];
-                        } elseif (isset($this->blocks[$parent]))
-                        {
+                        } elseif (isset($this->blocks[$parent])) {
                             $copy = $this->blocks[$parent];
                         }
                         $res = array();
                         preg_match_all($this->filevar_delim, $copy, $res, PREG_SET_ORDER);
-                        if (is_array($res) && isset($res[0]))
-                        {
+                        if (is_array($res) && isset($res[0])) {
                             // Changed as per solution in SF bug ID #1261828
-                            foreach ($res as $v)
-                            {
+                            foreach ($res as $v) {
                                 // Changed as per solution in SF bug ID #1261828
-                                if ($v[1] == $name)
-                                {
+                                if ($v[1] == $name) {
                                     // Changed as per solution in SF bug ID #1261828
                                     $copy = preg_replace("/" . preg_quote($v[0]) . "/", "$val", $copy);
                                     $this->preparsed_blocks = array_merge($this->preparsed_blocks, $this->_maketree($copy, $parent));
@@ -1046,12 +981,10 @@ namespace Trypta\Liquid {
         public function _store_filevar_parents($blocks)
         {
             $parents = array();
-            foreach ($blocks as $bname => $con)
-            {
+            foreach ($blocks as $bname => $con) {
                 $res = array();
                 preg_match_all($this->filevar_delim, $con, $res);
-                foreach ($res[1] as $k => $v)
-                {
+                foreach ($res[1] as $k => $v) {
                     $parents[$v][] = $bname;
                 }
             }
@@ -1081,23 +1014,19 @@ namespace Trypta\Liquid {
          */
         protected function _getfile($file)
         {
-            if (!isset($file))
-            {
+            if (!isset($file)) {
                 // JC 19/12/02 added $file to error message
                 $this->_set_error('!isset file name!' . $file);
                 return '';
             }
             // check if filename is mapped to other filename
-            if (isset($this->files))
-            {
-                if (isset($this->files[$file]))
-                {
+            if (isset($this->files)) {
+                if (isset($this->files[$file])) {
                     $file = $this->files[$file];
                 }
             }
             // prepend template dir
-            if (!empty($this->tpldir))
-            {
+            if (!empty($this->tpldir)) {
                 /**
                  * Support hierarchy of file locations to search
                  *
@@ -1106,66 +1035,50 @@ namespace Trypta\Liquid {
                  * 			$xtpl = new XTemplate('myfile.xtpl', array('.','/mypath', '/mypath2'));
                  * @since 29/05/2007
                  */
-                if (is_array($this->tpldir))
-                {
-                    foreach ($this->tpldir as $dir)
-                    {
-                        if (is_readable($dir . DIRECTORY_SEPARATOR . $file))
-                        {
+                if (is_array($this->tpldir)) {
+                    foreach ($this->tpldir as $dir) {
+                        if (is_readable($dir . DIRECTORY_SEPARATOR . $file)) {
                             $file = $dir . DIRECTORY_SEPARATOR . $file;
                             break;
                         }
                     }
-                } else
-                {
+                } else {
                     $file = $this->tpldir . DIRECTORY_SEPARATOR . $file;
                 }
             }
             $file_text = '';
-            if (isset($this->filecache[$file]))
-            {
+            if (isset($this->filecache[$file])) {
                 $file_text .= $this->filecache[$file];
-                if ($this->debug)
-                {
+                if ($this->debug) {
                     $file_text = '<!-- XTemplate debug cached: ' . realpath($file) . ' -->' . "\n" . $file_text;
                 }
-            } else
-            {
-                if (is_file($file) && is_readable($file))
-                {
-                    if (filesize($file))
-                    {
-                        if (!($fh = fopen($file, 'r')))
-                        {
+            } else {
+                if (is_file($file) && is_readable($file)) {
+                    if (filesize($file)) {
+                        if (!($fh = fopen($file, 'r'))) {
                             $this->_set_error('Cannot open file: ' . realpath($file));
                             return '';
                         }
                         $file_text .= fread($fh, filesize($file));
                         fclose($fh);
                     }
-                    if ($this->debug)
-                    {
+                    if ($this->debug) {
                         $file_text = '<!-- XTemplate debug: ' . realpath($file) . ' -->' . "\n" . $file_text;
                     }
-                } elseif (str_replace('.', '', phpversion()) >= '430' && $file_text = @file_get_contents($file, true))
-                {
+                } elseif (str_replace('.', '', phpversion()) >= '430' && $file_text = @file_get_contents($file, true)) {
                     // Enable use of include path by using file_get_contents
                     // Implemented at suggestion of SF Feature Request ID #1529478 michaelgroh
-                    if ($file_text === false)
-                    {
+                    if ($file_text === false) {
                         $this->_set_error("[" . realpath($file) . "] ($file) does not exist");
                         $file_text = "<b>__XTemplate fatal error: file [$file] does not exist in the include path__</b>";
-                    } elseif ($this->debug)
-                    {
+                    } elseif ($this->debug) {
                         $file_text = '<!-- XTemplate debug: ' . realpath($file) . ' (via include path) -->' . "\n" . $file_text;
                     }
-                } elseif (!is_file($file))
-                {
+                } elseif (!is_file($file)) {
                     // NW 17 Oct 2002 : Added realpath around the file name to identify where the code is searching.
                     $this->_set_error("[" . realpath($file) . "] ($file) does not exist");
                     $file_text .= "<b>__XTemplate fatal error: file [$file] does not exist__</b>";
-                } elseif (!is_readable($file))
-                {
+                } elseif (!is_readable($file)) {
                     $this->_set_error("[" . realpath($file) . "] ($file) is not readable");
                     $file_text .= "<b>__XTemplate fatal error: file [$file] is not readable__</b>";
                 }
@@ -1185,8 +1098,7 @@ namespace Trypta\Liquid {
         {
             $text = $this->_getfile($file);
             $res = array();
-            while (preg_match($this->file_delim, $text, $res))
-            {
+            while (preg_match($this->file_delim, $text, $res)) {
                 $text2 = $this->_getfile($res[1]);
                 $text = preg_replace("'" . preg_quote($res[0]) . "'", $text2, $text);
             }
@@ -1213,14 +1125,12 @@ namespace Trypta\Liquid {
          */
         private function _pre_var_dump($args)
         {
-            if ($this->debug)
-            {
+            if ($this->debug) {
                 echo '<pre>';
                 var_dump(func_get_args());
                 echo '</pre>';
             }
         }
-
     }
 
     /* end of XTemplate class. */

@@ -12,23 +12,21 @@ namespace Trypta\Liquid\Responses;
  */
 class JsonResponse extends HttpResponse
 {
-
     public function __toString()
     {
         return json_encode($this->content);
     }
     
-/**
-     * Appends a content variable
-     * 
-     * @access public
-     * @param mixed $content The content to append
-     * @param string $key The content key
-     */
+    /**
+         * Appends a content variable
+         *
+         * @access public
+         * @param mixed $content The content to append
+         * @param string $key The content key
+         */
     public function appendContent($content, $key)
     {
-        if(!array_key_exists($key, $this->content))
-        {
+        if (!array_key_exists($key, $this->content)) {
             $this->content[$key] = "";
         }
         $this->content[$key] .= $content;
@@ -36,23 +34,22 @@ class JsonResponse extends HttpResponse
 
     /**
      * Prepends a content variable
-     * 
+     *
      * @access public
      * @param mixed $content The content to prepend
      * @param string $key The content key
      */
     public function prependContent($content, $key)
     {
-        if(!array_key_exists($key, $this->content))
-        {
+        if (!array_key_exists($key, $this->content)) {
             $this->content[$key] = "";
         }
         $this->content[$key] = $content . $this->content[$key];
     }
     
     /**
-     * Sets a content variable 
-     * 
+     * Sets a content variable
+     *
      * @access public
      * @param mixed $content The content
      * @param string $key The content key
@@ -61,5 +58,4 @@ class JsonResponse extends HttpResponse
     {
         $this->content[$key] = $content;
     }
-
 }

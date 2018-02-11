@@ -22,18 +22,17 @@ namespace Trypta\Liquid\Interfaces {
 
     /**
      * IObservable Interface
-     * 
+     *
      * @package Liquid Framework
      * @subpackage Core
      * @catagory Interface
      * @author Sam Jones
      */
-    interface IObservable {
-    
+    interface IObservable
+    {
         public function attach(IObserver $observer);
         public function detach(IObserver $observer);
         public function notify();
-        
     }
 
 }

@@ -21,20 +21,21 @@
 namespace Trypta\Liquid\Traits {
 
     use \Trypta\Liquid\Interfaces;
-    
+
     /**
      * Observable trait
-     * 
+     *
      * @package Liquid Framework
      * @subpackage Core
      * @category Interface
      * @author Sam Jones
      */
-    trait Observable {
+    trait Observable
+    {
     
         /**
          * Array of attached observers
-         * 
+         *
          * @access protected
          * @var array $_observers
          */
@@ -42,7 +43,7 @@ namespace Trypta\Liquid\Traits {
         
         /**
          * Attaches an observer to this object
-         * 
+         *
          * @access public
          * @param \Liquid\Core\Traits\IObserver $observer
          */
@@ -53,16 +54,14 @@ namespace Trypta\Liquid\Traits {
         
         /**
          * Dettaches an observer from this object
-         * 
+         *
          * @access public
          * @param \Liquid\Core\Traits\IObserver $observer
          */
         public function detach(IObserver $observer)
         {
-            foreach($this->_observers as $key => $_observer)
-            {
-                if($observer == $_observer)
-                {
+            foreach ($this->_observers as $key => $_observer) {
+                if ($observer == $_observer) {
                     unset($this->_observers[$key]);
                 }
             }
@@ -70,17 +69,15 @@ namespace Trypta\Liquid\Traits {
         
         /**
          * Notifys all observers of an update
-         * 
+         *
          * @access public
          */
         public function notify()
         {
-            foreach($this->_observers as $_observer)
-            {
+            foreach ($this->_observers as $_observer) {
                 $_observer->update($this);
             }
         }
-        
     }
 
 }

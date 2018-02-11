@@ -19,7 +19,7 @@
  */
 /**
  * Describes an Environment object
- * 
+ *
  * @since version 0.0.1
  * @author Sam Jones <jones at cityvinyl.co.uk>
  */
@@ -38,8 +38,8 @@ use Logging\FileLoggerStorage as FileLoggerStorage;
  * @subpackage Core
  * @category Environment
  */
-class Environment {
-
+class Environment
+{
     use \Trypta\Liquid\Traits\Singleton;
 
     const ENV_PRODUCTION = 'PRODUCTION';
@@ -58,7 +58,7 @@ class Environment {
 
     /**
      * Contains the system environment type
-     * 
+     *
      * @access private
      * @var string $type
      */
@@ -66,7 +66,7 @@ class Environment {
     
     /**
      * Contains system path locations
-     * 
+     *
      * @access private
      * @var array $paths
      */
@@ -85,7 +85,7 @@ class Environment {
     
     /**
      * System logger
-     * 
+     *
      * @access protected
      * @var Psr\Log\LoggerInterface $logger
      */
@@ -93,7 +93,7 @@ class Environment {
 
     /**
      * Static environment access, calls associated method on singleton instance
-     * 
+     *
      * @final
      * @static
      * @access public
@@ -109,7 +109,7 @@ class Environment {
 
     /**
      * Environment class constructor
-     * 
+     *
      * @access public
      * @param string $root Root path (site root: where site index and bootstrap files reside)
      * @param string $system System path (system root: where assets and private data resides)
@@ -118,53 +118,41 @@ class Environment {
      */
     public function __construct($root = null, $system = null, $library = null)
     {
-        if (empty($root))
-        {
-            if (empty($this->paths[self::PATH_ROOT]))
-            {
+        if (empty($root)) {
+            if (empty($this->paths[self::PATH_ROOT])) {
                 throw new RuntimeException('Root path is not set');
             }
-        } else
-        {
+        } else {
             $this->paths[self::PATH_ROOT] = $root;
         }
 
-        if (empty($system))
-        {
-
-            if (empty($this->paths[self::PATH_SYSTEM]))
-            {
+        if (empty($system)) {
+            if (empty($this->paths[self::PATH_SYSTEM])) {
                 throw new RuntimeException('System path is not set');
             }
-        } else
-        {
+        } else {
             $this->paths[self::PATH_SYSTEM] = $system;
         }
 
-        if (empty($library))
-        {
-
-            if (empty($this->paths[self::PATH_LIB]))
-            {
+        if (empty($library)) {
+            if (empty($this->paths[self::PATH_LIB])) {
                 throw new RuntimeException('System path is not set');
             }
-        } else
-        {
+        } else {
             $this->paths[self::PATH_LIB] = $library;
         }
     }
 
     /**
      * Sets the environment type
-     * 
+     *
      * @access public
      * @param string $type Environment::ENV_ constant
      */
     public function setEnvironmentType($type = null)
     {
         $this->type = $type;
-        switch($this->type)
-        {
+        switch ($this->type) {
             case self::ENV_DEVELOPMENT:
             case self::ENV_STAGING:
                 ini_set('display_errors', 1);
@@ -175,17 +163,16 @@ class Environment {
 
     /**
      * Sets a system path location
-     * 
+     *
      * @access public
      * @param string $id Path ID
      * @param string $path Path relative to PATH_SYSTEM, absolute if it begins with DS
-     * @throws \InvalidArgumentException 
+     * @throws \InvalidArgumentException
      */
     public function setPath($id, $path)
     {
         $fixedPaths = array(self::PATH_ROOT, self::PATH_SYSTEM, self::PATH_LIB);
-        if(in_array($id, $fixedPaths))
-        {
+        if (in_array($id, $fixedPaths)) {
             throw new \InvalidArgumentException('Cannot set ' . $id . ' path after instantiation.');
         }
 
@@ -195,8 +182,7 @@ class Environment {
     
     public function getPath($id)
     {
-        if(!array_key_exists($id, $this->paths))
-        {
+        if (!array_key_exists($id, $this->paths)) {
             throw new \RuntimeException('Invalid path ID');
         }
         return substr($this->paths[$id], 0, 1) == DS ? $this->paths[$id] : $this->paths[self::PATH_SYSTEM] . DS . $this->paths[$id];
@@ -204,16 +190,14 @@ class Environment {
     
     /**
      * Returns an environment logger
-     * 
+     *
      * @access public
      * @return Psr\Log\LoggerInterface
      */
     public function getLogger()
     {
-        if(is_null($this->logger))
-        {
-            switch($this->type)
-            {
+        if (is_null($this->logger)) {
+            switch ($this->type) {
                 case self::ENV_TESTING:
                     
                     break;
@@ -224,7 +208,7 @@ class Environment {
                     
                     break;
                 case self::ENV_DEVELOPMENT:
-                default: 
+                default:
                     $logfile = $this->getPath(self::PATH_LOGS) . DS . 'debug.log';
                     $this->logger = new DebugLogger(new FileLoggerStorage($logfile));
                     break;
@@ -232,5 +216,4 @@ class Environment {
         }
         return $this->logger;
     }
-
 }

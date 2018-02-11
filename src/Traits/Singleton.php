@@ -28,11 +28,12 @@ namespace Trypta\Liquid\Traits {
      * @category Trait
      * @author Jonesy
      */
-    trait Singleton {
+    trait Singleton
+    {
 
         /**
          * Singleton instance of this class
-         * 
+         *
          * @static
          * @access private
          * @var Liquid\Application $_instance
@@ -41,7 +42,7 @@ namespace Trypta\Liquid\Traits {
 
         /**
          * Returns singleton instance of class
-         * 
+         *
          * @final
          * @static
          * @access public
@@ -49,8 +50,7 @@ namespace Trypta\Liquid\Traits {
          */
         final public static function getInstance()
         {
-            if(is_null(static::$_instance))
-            {
+            if (is_null(static::$_instance)) {
                 $ref = new \ReflectionClass(get_called_class());
                 static::$_instance = $ref->newInstanceArgs(func_get_args());
             }
@@ -58,20 +58,23 @@ namespace Trypta\Liquid\Traits {
         }
         
         /**
-         * Remove magic __clone method as singleton 
-         * 
+         * Remove magic __clone method as singleton
+         *
          * @final
          * @access private
          */
-        final private function __clone() { }
+        final private function __clone()
+        {
+        }
         
         /**
          * Remove magic __wakeup method as singleton
-         * 
+         *
          * @final
          * @access private
          */
-        final private function __wakeup() { }
-
+        final private function __wakeup()
+        {
+        }
     }
 }

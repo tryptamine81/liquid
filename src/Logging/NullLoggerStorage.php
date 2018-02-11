@@ -25,11 +25,9 @@ namespace Trypta\Liquid\Logging;
  *
  * @author Jonesy
  */
-class NullLoggerStorage extends AbstractLoggerStorage implements LoggerStorageInterface {
-
+class NullLoggerStorage extends AbstractLoggerStorage implements LoggerStorageInterface
+{
     public function store($level, $message)
     {
-        
     }
-
 }

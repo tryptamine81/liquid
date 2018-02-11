@@ -27,8 +27,8 @@ namespace Trypta\Liquid {
      *
      * @author Jonesy
      */
-    abstract class RouteHandler {
-
+    abstract class RouteHandler
+    {
         protected $app = null;
         protected $uri = null;
         protected $response = null;
@@ -40,7 +40,7 @@ namespace Trypta\Liquid {
             $this->response = new HttpResponse();
         }
 
-        public abstract function route();
+        abstract public function route();
 
         public function getResponse()
         {
@@ -49,34 +49,28 @@ namespace Trypta\Liquid {
 
         public function beforeSessionStart()
         {
-            
         }
 
         public function beforeDatabaseStart()
         {
-            
         }
 
         public function beforeRoutingStart()
         {
-            
         }
 
         public function initialise()
         {
-            
         }
 
         public function shutdown()
         {
-            
         }
 
         public function handleException(Exception $ex)
         {
             throw $ex;
         }
-
     }
 
 }

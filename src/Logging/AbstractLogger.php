@@ -24,17 +24,18 @@ use Psr\Log\LogLevel as LogLevel;
 
 /**
  * Liquid Framework PSR-3 compliant Abstract Logger Class
- * 
+ *
  * Base logger all Liquid Framework and defines additional logger actions
  *
  * @since version 0.0.1
  * @author Sam Jones <jonesy at cityvinyl.co.uk>
  */
-abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
+abstract class AbstractLogger implements \Psr\Log\LoggerInterface
+{
     
     /**
      * Logger storage engine
-     * 
+     *
      * @access protected
      * @var LoggerStorageInterface $storage
      */
@@ -42,7 +43,7 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
 
     /**
      * Base constructor sets the storage engine instance
-     * 
+     *
      * @access public
      * @param \Liquid\Core\Logging\LoggerStorageInterface $storage Logger Storage Engine Instance
      */
@@ -53,7 +54,7 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
 
     /**
      * Log an alert event
-     * 
+     *
      * @access public
      * @param string $message The message string
      * @param array $context Context variables to insert into message
@@ -65,7 +66,7 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
 
     /**
      * Log a critical event
-     * 
+     *
      * @access public
      * @param string $message The message string
      * @param array $context Context variables to insert into message
@@ -77,7 +78,7 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
 
     /**
      * Log a debug event
-     * 
+     *
      * @access public
      * @param string $message The message string
      * @param array $context Context variables to insert into message
@@ -89,7 +90,7 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
 
     /**
      * Log an emergency event
-     * 
+     *
      * @access public
      * @param string $message The message string
      * @param array $context Context variables to insert into message
@@ -101,7 +102,7 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
 
     /**
      * Log an error event
-     * 
+     *
      * @access public
      * @param string $message The message string
      * @param array $context Context variables to insert into message
@@ -113,7 +114,7 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
 
     /**
      * Log an info event
-     * 
+     *
      * @access public
      * @param string $message The message string
      * @param array $context Context variables to insert into message
@@ -124,9 +125,9 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
     }
 
     /**
-     * 
+     *
      * @param string $level Log level
-     * @param string $message 
+     * @param string $message
      * @param array $context
      */
     public function log($level, $message, array $context = array())
@@ -137,7 +138,7 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
 
     /**
      * Log a notice event
-     * 
+     *
      * @access public
      * @param string $message The message string
      * @param array $context Context variables to insert into message
@@ -149,7 +150,7 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
 
     /**
      * Log a warning event
-     * 
+     *
      * @access public
      * @param string $message The message string
      * @param array $context Context variables to insert into message
@@ -161,7 +162,7 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
 
     /**
      * Interpolates context values into the message placeholders.
-     * 
+     *
      * @access public
      * @param string $message
      * @param array $context
@@ -171,11 +172,9 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
     {
         // build a replacement array with braces around the context keys
         $replace = array();
-        foreach ($context as $key => $val)
-        {
+        foreach ($context as $key => $val) {
             // check that the value can be casted to string
-            if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString')))
-            {
+            if (!is_array($val) && (!is_object($val) || method_exists($val, '__toString'))) {
                 $replace['{' . $key . '}'] = $val;
             }
         }
@@ -183,6 +182,4 @@ abstract class AbstractLogger implements \Psr\Log\LoggerInterface {
         // interpolate replacement values into the message and return
         return strtr($message, $replace);
     }
-
 }
-

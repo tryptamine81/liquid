@@ -32,11 +32,11 @@ namespace Trypta\Liquid\Logging;
  * @subpackage Logging
  * @category Log Storage
  */
-class FileLoggerStorage extends AbstractLoggerStorage implements LoggerStorageInterface {
-
+class FileLoggerStorage extends AbstractLoggerStorage implements LoggerStorageInterface
+{
     const DATE_FORMAT = 'Y-m-d H:i:s.v';
     const SEPERATOR = '\t';
-    const EOL = '\r\n';           
+    const EOL = '\r\n';
     
     /**
      * @access protected
@@ -46,7 +46,7 @@ class FileLoggerStorage extends AbstractLoggerStorage implements LoggerStorageIn
 
     /**
      * Instantiates the the class
-     * 
+     *
      * @access public
      * @param string $file The log file path and filename
      */
@@ -57,14 +57,13 @@ class FileLoggerStorage extends AbstractLoggerStorage implements LoggerStorageIn
 
     /**
      * Stores a log message in the log file
-     * 
+     *
      * @access public
      * @param string $message The message to log
      * @throws Exception
      */
     public function store($level, $message)
     {
-
         $Now = new \DateTime();
         $data = $Now->format(self::DATE_FORMAT) . self::SEPERATOR . $level . self::SEPERATOR . $message . self::EOL;
         
@@ -75,18 +74,15 @@ class FileLoggerStorage extends AbstractLoggerStorage implements LoggerStorageIn
         $max_retries = 100;
         $lock = false;
 
-        do
-        {
-            if ($retries > 0)
-            {
+        do {
+            if ($retries > 0) {
                 usleep(rand(1, 10000));
             }
             $retries++;
             $lock = flock($fp, LOCK_EX);
         } while (!$lock && $retries <= $max_retries);
 
-        if (!$lock)
-        {
+        if (!$lock) {
             throw new Exception('Could not obtain file lock, try saving again.');
         }
 
@@ -94,5 +90,4 @@ class FileLoggerStorage extends AbstractLoggerStorage implements LoggerStorageIn
         $unlock = flock($fp, LOCK_UN);
         fclose($fp);
     }
-
 }

@@ -28,10 +28,9 @@ namespace Trypta\Liquid {
      * @category System
      * @author Sam Jones
      */
-    abstract class Response {
-        
+    abstract class Response
+    {
         abstract public function send();
-        
     }
 
 }

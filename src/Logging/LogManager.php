@@ -28,8 +28,7 @@ namespace Trypta\Liquid\Logging;
  * @category Manager
  * @author Sam Jones <jonesy at cityvinyl.co.uk>
  */
-class LogManager {
-    
+class LogManager
+{
     const DEBUG = 'debug';
-    
 }

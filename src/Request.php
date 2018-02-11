@@ -25,8 +25,8 @@ namespace Trypta\Liquid {
      *
      * @author Jonesy
      */
-    class Request {
-
+    class Request
+    {
         use Traits\Singleton;
 
         private $_headers = array();
@@ -50,8 +50,7 @@ namespace Trypta\Liquid {
 
         public function getHeader($key)
         {
-            if (!array_key_exists($key, $this->_headers))
-            {
+            if (!array_key_exists($key, $this->_headers)) {
                 throw new InvalidArgumentException('Invalid HTTP header: ' . $key);
             }
             return $this->_headers[$key];
@@ -64,8 +63,7 @@ namespace Trypta\Liquid {
 
         public function get($key, $filter = FILTER_DEFAULT, $options = array())
         {
-            if (!$this->has($key))
-            {
+            if (!$this->has($key)) {
                 throw new InvalidArgumentException('Request data not set: ' . $key);
             }
             return filter_var($this->_data[$key], $filter, $options);
@@ -78,8 +76,7 @@ namespace Trypta\Liquid {
 
         public function getOrSet($key, $value, $filter = FILTER_DEFAULT, $options = array())
         {
-            if (!$this->has($key))
-            {
+            if (!$this->has($key)) {
                 $this->set($key, $value);
             }
             return filter_var($this->_data[$key], $filter, $options);
@@ -92,8 +89,7 @@ namespace Trypta\Liquid {
 
         public function getQueryStringParam($key, $filter = FILTER_DEFAULT, $options = array())
         {
-            if (!$this->hasQueryStringParam())
-            {
+            if (!$this->hasQueryStringParam()) {
                 throw new \InvalidArgumentException('Invalid query string parameter or parameter not set: ' . $key);
             }
             return filter_var($this->_get[$key], $filter, $options);
@@ -101,8 +97,7 @@ namespace Trypta\Liquid {
 
         public function getServer($key)
         {
-            if (!array_key_exists($key, $this->_server))
-            {
+            if (!array_key_exists($key, $this->_server)) {
                 throw new \InvalidArgumentException('Invalid server variable key: ' . $key);
             }
             return $this->_server[$key];
@@ -110,8 +105,7 @@ namespace Trypta\Liquid {
 
         public function getCookie($key, $filter = FILTER_DEFAULT, $options = array())
         {
-            if (!$this->hasCookie($key))
-            {
+            if (!$this->hasCookie($key)) {
                 throw new \InvalidArgumentException('Cookie value does not exist: ' . $key);
             }
             return filter_var($this->_cookies[$key], $filter, $options);
@@ -124,8 +118,7 @@ namespace Trypta\Liquid {
 
         public function getEnv($key)
         {
-            if (!$this->hasEnv($key))
-            {
+            if (!$this->hasEnv($key)) {
                 throw new \InvalidArgumentException('Environment variable key is invalid: ' . $key);
             }
             return $this->_env[$key];
@@ -138,8 +131,7 @@ namespace Trypta\Liquid {
 
         public function getFile($key)
         {
-            if (!$this->hasFile($key))
-            {
+            if (!$this->hasFile($key)) {
                 throw new \InvalidArgumentException('File does not exists in request: ' . $key);
             }
             return $this->_files[$key];
@@ -172,19 +164,15 @@ namespace Trypta\Liquid {
         {
             $arh = array();
             $rx_http = '/\AHTTP_/';
-            foreach ($_SERVER as $key => $val)
-            {
-                if (preg_match($rx_http, $key))
-                {
+            foreach ($_SERVER as $key => $val) {
+                if (preg_match($rx_http, $key)) {
                     $arh_key = preg_replace($rx_http, '', $key);
                     $rx_matches = array();
                     // do some nasty string manipulations to restore the original letter case
                     // this should work in most cases
                     $rx_matches = explode('_', $arh_key);
-                    if (count($rx_matches) > 0 and strlen($arh_key) > 2)
-                    {
-                        foreach ($rx_matches as $ak_key => $ak_val)
-                        {
+                    if (count($rx_matches) > 0 and strlen($arh_key) > 2) {
+                        foreach ($rx_matches as $ak_key => $ak_val) {
                             $rx_matches[$ak_key] = ucfirst($ak_val);
                         }
                         $arh_key = implode('-', $rx_matches);
@@ -192,9 +180,8 @@ namespace Trypta\Liquid {
                     $arh[$arh_key] = $val;
                 }
             }
-            return( $arh );
+            return($arh);
         }
-
     }
 
 }

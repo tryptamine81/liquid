@@ -25,7 +25,7 @@ namespace Trypta\Liquid\Logging;
  * @since versino 0.0.1
  * @author Sam Jones <jonesy at cityvinyl.co.uk>
  */
-interface LoggerStorageInterface {
+interface LoggerStorageInterface
+{
     public function store($level, $message);
 }
-

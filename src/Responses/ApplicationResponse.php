@@ -36,8 +36,7 @@ class ApplicationResponse extends JsonResponse
     
     public function setWidgetResponse($content, $widget)
     {
-        if(!array_key_exists(self::KEY_WIDGETS, $this->content))
-        {
+        if (!array_key_exists(self::KEY_WIDGETS, $this->content)) {
             $this->_content[self::KEY_WIDGETS] = array();
         }
         $this->_content[self::KEY_WIDGETS][$widget] = $content;

@@ -25,12 +25,10 @@ namespace Trypta\Liquid\Logging;
  *
  * @author Jonesy
  */
-class NullLogger extends AbstractLogger implements Psr\Log\LoggerInterface {
-
+class NullLogger extends AbstractLogger implements Psr\Log\LoggerInterface
+{
     public function __construct(LoggerStorageInterface $storage = null)
     {
         parent::__construct(new NullLoggerStorage());
     }
-
 }
-

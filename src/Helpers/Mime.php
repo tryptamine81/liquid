@@ -28,14 +28,14 @@ namespace Trypta\Liquid\Helpers {
      * @Category Helper
      * @author Jonesy
      */
-    class Mime {
-        
+    class Mime
+    {
         const APACHE_MIME_TYPES_URL = 'http://svn.apache.org/repos/asf/httpd/httpd/trunk/docs/conf/mime.types';
         const DEFINITIONS_FILE = 'mime.ini.php';
 
         /**
          * Mime type definition list, loaded from cached ini file
-         * 
+         *
          * @static
          * @access protected
          * @var array $_mimeDefinitions
@@ -44,7 +44,7 @@ namespace Trypta\Liquid\Helpers {
         
         /**
          * Returns the MIME type of the file as a string
-         * 
+         *
          * @static
          * @access public
          * @param string $file Path to the file
@@ -63,7 +63,7 @@ namespace Trypta\Liquid\Helpers {
         
         /**
          * Returns the MIME type of the file extension as a string
-         * 
+         *
          * @static
          * @access public
          * @param string $ext The file extension
@@ -71,13 +71,11 @@ namespace Trypta\Liquid\Helpers {
          */
         public static function getExtensionMime($ext)
         {
-            if(is_null(self::$_mimeDefinitions) || count(self::$_mimeDefinitions['types']) == 0)
-            {
+            if (is_null(self::$_mimeDefinitions) || count(self::$_mimeDefinitions['types']) == 0) {
                 self::_loadDefinitions();
             }
             
-            if(array_key_exists($ext, self::$_mimeDefinitions['types']))
-            {
+            if (array_key_exists($ext, self::$_mimeDefinitions['types'])) {
                 return self::$_mimeDefinitions['types'][$ext];
             }
             return 'NOT_FOUND';
@@ -85,21 +83,19 @@ namespace Trypta\Liquid\Helpers {
         
         /**
          * Loads the cached definition file, if it does not exist, create it
-         * 
+         *
          * @static
          * @access private
          */
         private static function _loadDefinitions()
         {
-            if(!file_exists(__DIR__ . DS . self::DEFINITIONS_FILE))
-            {
+            if (!file_exists(__DIR__ . DS . self::DEFINITIONS_FILE)) {
                 static::_generateUpToDateMimeArray();
             } else {
-                self::$_mimeDefinitions = parse_ini_file(__DIR__ . DS . self::DEFINITIONS_FILE, true, INI_SCANNER_NORMAL);            
+                self::$_mimeDefinitions = parse_ini_file(__DIR__ . DS . self::DEFINITIONS_FILE, true, INI_SCANNER_NORMAL);
             }
             
-            if(count(self::$_mimeDefinitions['types']) == 0)
-            {
+            if (count(self::$_mimeDefinitions['types']) == 0) {
                 static::_generateUpToDateMimeArray();
             }
         }
@@ -107,7 +103,7 @@ namespace Trypta\Liquid\Helpers {
         /**
          * Generates the mime cache file from the public list located at
          * self::APACHE_MIME_TYPES_URL
-         * 
+         *
          * @static
          * @access private
          * @param string $url
@@ -123,11 +119,9 @@ namespace Trypta\Liquid\Helpers {
             $lines = explode("\n", $contents);
             self::$_mimeDefinitions = array();
             
-            foreach ($lines as $line)
-            {
+            foreach ($lines as $line) {
                 //  Ignore lines beginning with a '#'
-                if(substr($line, 0, 1) == '#')
-                {
+                if (substr($line, 0, 1) == '#') {
                     continue;
                 }
                 
@@ -135,8 +129,7 @@ namespace Trypta\Liquid\Helpers {
                 $match = preg_match_all('#([^\s]+)#', $line, $matches);
                 
                 //  If no match, continue
-                if(!$match || !isset($matches[1]))
-                {
+                if (!$match || !isset($matches[1])) {
                     continue;
                 }
                 
@@ -144,15 +137,13 @@ namespace Trypta\Liquid\Helpers {
                 $c = count($matches[1]);
                 
                 //  If less than 2 matches, continue
-                if($c < 2)
-                {
+                if ($c < 2) {
                     continue;
                 }
                 
                 // Iterate matches, first match is type, remaining matches
                 // are the associated file extensions
-                for ($i = 1; $i < $c; $i++)
-                {
+                for ($i = 1; $i < $c; $i++) {
                     $ini_data[] = $matches[1][$i] . "=\"" . $matches[1][0] . "\"";
                     self::$_mimeDefinitions[$matches[1][$i]] = $matches[1][0];
                 }
@@ -160,9 +151,7 @@ namespace Trypta\Liquid\Helpers {
             
             //  Write mime cache file
             file_put_contents($ini_file, implode("\r\n", $ini_data));
-
         }
-
     }
 
 }
