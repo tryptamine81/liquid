@@ -48,7 +48,7 @@ namespace Trypta\Liquid {
         public function start()
         {
             session_save_path($this->config['save_path']);
-            session_set_cookie_params($this->config['save_path'], '/', $config['domain'], false, false);
+            session_set_cookie_params($this->config['save_path'], '/', $this->config['domain'], false, false);
             session_start();
         }
 
