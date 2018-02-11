@@ -295,6 +295,18 @@
 
     <property name="phpdox.done" value="true"/>
   </target>
+  
+  <target name="phpdoc"
+          unless="phpdoc"
+          depends="phploc-ci,phpcs-ci,phpmd-ci"
+          description="Generate project documentation using phpDocumentor">
+    <exec executable="${phpdoc}" dir="${basedir}/build" taskname="phpdoc">
+      <arg value="--config" />
+      <arg path="${basedir}/build/phpdoc.xml" />
+    </exec>
+
+    <property name="phpdoc.done" value="true"/>
+  </target>
 
   <target name="-check-failure">
     <fail message="PHPUnit did not finish successfully">
