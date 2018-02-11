@@ -22,7 +22,7 @@ class SessionTest extends TestCase
     
     public function setUp()
     {
-        $this->session = Session::getInstance();
+        $this->session = Session::getInstance(array());
         $this->session->start();
     }
     

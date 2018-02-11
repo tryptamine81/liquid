@@ -297,7 +297,7 @@ namespace Trypta\Liquid {
                 $this->db = new DatabaseManager($db_config, $db_tables);
 
                 //  Create session object
-                $this->session = new Session($this);
+                $this->session = new Session($this->config->get(Session::CONFIG_SECTION));
 
                 //  Run before session start hook
                 $this->beforeSessionStart();

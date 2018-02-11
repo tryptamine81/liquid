@@ -39,10 +39,10 @@ namespace Trypta\Liquid {
         private $app = null;
         public $config = array();
 
-        public function __construct(\Liquid\Application $app)
+        public function __construct(array $config = array())
         {
             $this->app = $app;
-            $this->config = array_merge($this->_config_defaults, $this->app->config->get(self::CONFIG_SECTION));
+            $this->config = array_merge($this->_config_defaults, $config);
         }
 
         public function start()
