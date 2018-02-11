@@ -160,6 +160,17 @@ class Environment
                 break;
         }
     }
+    
+    /**
+     * Returns the current environment type
+     *
+     * @access public
+     * @return string
+     */
+    public function getEnvironmentType()
+    {
+        return $this->type;
+    }
 
     /**
      * Sets a system path location
