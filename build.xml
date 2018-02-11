@@ -14,7 +14,7 @@
   <property name="phpcpd"  value="${basedir}/build/tools/phpcpd-4.0.0.phar"/>
   <property name="phpcs"   value="${basedir}/build/tools/phpcs.phar"/>
   <property name="phpcbf"   value="${basedir}/build/tools/phpcbf.phar"/>
-  <property name="phpdox"  value="${basedir}/build/tools/phpdox.phar"/>
+  <property name="phpdox"  value="${basedir}/build/tools/phpdox-0.11.0.phar"/>
   <property name="phploc"  value="${basedir}/build/tools/phploc-4.0.1.phar"/>
   <property name="phpmd"   value="${basedir}/build/tools/phpmd.phar"/>
   <property name="phpunit" value="${basedir}/build/tools/phpunit-6.5.6.phar"/>
