@@ -19,6 +19,6 @@ class EnvironmentTest extends TestCase
     public function testEnvironmentSingletonInstantiation()
     {
         $env = Environment::getInstance(__DIR__, __DIR__, __DIR__);
-        $this->assertEquals(get_class($env), 'Environment');
+        $this->assertEquals(get_class($env), 'Trypta\Liquid\Environment');
     }
 }
