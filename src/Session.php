@@ -30,6 +30,7 @@ namespace Trypta\Liquid {
         const CONFIG_SECTION = 'system.session';
 
         private $_config_defaults = array(
+            'domain' => null,
             'save_path' => '',
             'lifetime' => 2592000
         );
@@ -47,7 +48,7 @@ namespace Trypta\Liquid {
         public function start()
         {
             session_save_path($this->config['save_path']);
-            session_set_cookie_params($this->config['save_path'], '/', $this->app->request->getServer('SERVER_NAME'), false, false);
+            session_set_cookie_params($this->config['save_path'], '/', $config['domain'], false, false);
             session_start();
         }
 
