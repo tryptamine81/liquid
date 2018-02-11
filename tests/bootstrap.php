@@ -5,6 +5,7 @@ require_once(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendo
 
 define('PATH_TEST', __DIR__);
 define('PATH_ROOT', PATH_TEST . DIRECTORY_SEPARATOR . 'stage');
+define('PATH_SYSTEM', PATH_ROOT);
 
 //  Create system staging area
 if (!is_dir(PATH_ROOT)) {

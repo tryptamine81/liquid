@@ -32,6 +32,6 @@ class SessionTest extends TestCase
     public function testSession()
     {
         $_SESSION['test'] = 'value';
-        $this->assetEquals($this->session->data['test'], 'value');
+        $this->assetEquals($this->session->data['test'], PATH_SYSTEM . DIRECTORY_SEPARATOR . 'value');
     }
 }
