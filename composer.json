@@ -1,0 +1,16 @@
+{
+    "name": "trypta/liquid",
+    "description": "Liquid PHP Application Framework",
+    "authors": [
+        {
+            "name": "Sam Jones",
+            "email": "jonesy@cityvinyl.co.uk"
+        }
+    ],
+    "autoload": {
+      "psr-4": {"Typta\\Liquid\\": "src/"}
+    },
+    "require": {
+
+    }
+}
