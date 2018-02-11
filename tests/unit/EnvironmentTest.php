@@ -57,7 +57,7 @@ class EnvironmentTest extends TestCase
     public function testPaths()
     {
         $this->env->setPath(Environment::PATH_ASSETS, 'assets_test');
-        $this->assertEquals($this->env->getPath(Environment::PATH_ASSETS), 'assets_test');
+        $this->assertEquals($this->env->getPath(Environment::PATH_ASSETS), PATH_SYSTEM . DIRECTORY_SEPARATOR . 'assets_test');
         
         $this->expectException(\InvalidArgumentException::class);
         $this->env->setPath(Environment::PATH_SYSTEM, 'invalid');
