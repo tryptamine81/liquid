@@ -75,7 +75,6 @@ namespace Trypta\Liquid {
          * @access public
          * @param string $filename  - Location of configuration file to load
          * @throws \InvalidArgumentException
-         * @throws RuntimeException
          */
         public function __construct($filename = null)
         {
@@ -83,12 +82,11 @@ namespace Trypta\Liquid {
                 throw new \InvalidArgumentException('Configuration filename is required');
             }
 
-            if (!file_exists($filename)) {
-                throw new \RuntimeException('Configuration file not found: ' . $filename);
-            }
-
             $this->_filename = $filename;
-            $this->load();
+            if (file_exists($filename)) {
+                $this->load();
+            }
+            
         }
 
         /**
