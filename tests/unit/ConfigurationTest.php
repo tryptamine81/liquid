@@ -47,7 +47,9 @@ class ConfigurationTest extends TestCase
    * Test setting and saving of configuration data
    * 
    * @covers Trypta\Liquid\Configuration::set
+   * @covers Trypta\Liquid\Configuration::get
    * @covers Trypta\Liquid\Configuration::save
+   * @covers Trypta\Liquid\Configuration::load
    */
   public function testSetSaveConfig()
   {
@@ -68,17 +70,7 @@ class ConfigurationTest extends TestCase
     $this->config->save();
     
     $this->assertFileExists($this->configFile);
-  }
   
-  /**
-   * Tests load and get of configuration data
-   * 
-   * @depends testSetSaveConfig
-   * @covers Trypta\Liquid\Configuration::load
-   * @covers Trypta\Liquid\Configuration::get
-   */
-  public function testLoadGetConfig()
-  {
     $config = new Configuration($this->configFile);
     
     $this->assertEquals($this->config->get('section_a.key_a.value_a'), $config->get('section_a.key_a.value_a'));
