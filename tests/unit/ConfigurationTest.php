@@ -110,16 +110,16 @@ class ConfigurationTest extends TestCase
     $configa = new Configuration($this->configFile);
     $configa->load();
     
-    $assertEquals($config->get('section_a.key_a.value_a'), $configa->get('section_a.key_a.value_a'));
-    $assertEquals($config->get('section_a.key_a.value_b'), $configa->get('section_a.key_a.value_b'));
-    $assertEquals($config->get('section_a.key_b.value_a'), $configa->get('section_a.key_b.value_a'));
-    $assertEquals($config->get('section_a.key_b.value_b'), $configa->get('section_a.key_b.value_b'));
-    $assertEquals($config->get('section_b.key_a.value_a'), $configa->get('section_b.key_a.value_a'));
-    $assertEquals($config->get('section_b.key_a.value_b'), $configa->get('section_b.key_a.value_b'));
-    $assertEquals($config->get('section_b.key_b.value_a'), $configa->get('section_b.key_b.value_a'));
-    $assertEquals($config->get('section_b.key_b.value_b'), $configa->get('section_b.key_b.value_b'));    
-    $assertEquals($config->get('section_a.key_a'), $configa->get('section_a.key_a'));
-    $assertEquals($config->get('section_b'), $configa->get('section_b'));
+    $this->assertEquals($config->get('section_a.key_a.value_a'), $configa->get('section_a.key_a.value_a'));
+    $this->assertEquals($config->get('section_a.key_a.value_b'), $configa->get('section_a.key_a.value_b'));
+    $this->assertEquals($config->get('section_a.key_b.value_a'), $configa->get('section_a.key_b.value_a'));
+    $this->assertEquals($config->get('section_a.key_b.value_b'), $configa->get('section_a.key_b.value_b'));
+    $this->assertEquals($config->get('section_b.key_a.value_a'), $configa->get('section_b.key_a.value_a'));
+    $this->assertEquals($config->get('section_b.key_a.value_b'), $configa->get('section_b.key_a.value_b'));
+    $this->assertEquals($config->get('section_b.key_b.value_a'), $configa->get('section_b.key_b.value_a'));
+    $this->assertEquals($config->get('section_b.key_b.value_b'), $configa->get('section_b.key_b.value_b'));    
+    $this->assertEquals($config->get('section_a.key_a'), $configa->get('section_a.key_a'));
+    $this->assertEquals($config->get('section_b'), $configa->get('section_b'));
     return $config;
   }
   
