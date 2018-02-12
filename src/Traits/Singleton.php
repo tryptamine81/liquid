@@ -38,7 +38,7 @@ namespace Trypta\Liquid\Traits {
          * @access private
          * @var Liquid\Application $_instance
          */
-        protected static $_instance = null;
+        protected static $instance = null;
 
         /**
          * Returns singleton instance of class
@@ -50,11 +50,11 @@ namespace Trypta\Liquid\Traits {
          */
         final public static function getInstance()
         {
-            if (is_null(static::$_instance)) {
+            if (is_null(static::$instance)) {
                 $ref = new \ReflectionClass(get_called_class());
-                static::$_instance = $ref->newInstanceArgs(func_get_args());
+                static::$instance = $ref->newInstanceArgs(func_get_args());
             }
-            return static::$_instance;
+            return static::$instance;
         }
         
         /**
