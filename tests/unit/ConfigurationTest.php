@@ -108,7 +108,7 @@ class ConfigurationTest extends TestCase
     $this->assertFileExists($this->configFile);
   
     $configa = new Configuration($this->configFile);
-    $confia->load();
+    $configa->load();
     
     $assertEquals($config->get('section_a.key_a.value_a'), $configa->get('section_a.key_a.value_a'));
     $assertEquals($config->get('section_a.key_a.value_b'), $configa->get('section_a.key_a.value_b'));
