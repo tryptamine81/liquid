@@ -21,9 +21,6 @@ class ConfigurationTest extends TestCase
   protected $configFile = __DIR__ . DS . 'config.ini.php';
   protected $config = null;
 
-  /**
-   * Sets up the test
-   */
   public function setUp()
   {
     if(file_exists($this->configFile))
@@ -44,43 +41,103 @@ class ConfigurationTest extends TestCase
   }
   
   /**
-   * Test setting and saving of configuration data
-   * 
-   * @covers Trypta\Liquid\Configuration::set
-   * @covers Trypta\Liquid\Configuration::get
-   * @covers Trypta\Liquid\Configuration::save
-   * @covers Trypta\Liquid\Configuration::load
+   * @covers \Trypta\Liquid\Configuration::__construct
    */
-  public function testSetSaveConfig()
+  public function testCreate()
   {
     //  Create configuration object
-    $this->config = new Configuration($this->configFile);
-    
+    $config = new Configuration($this->configFile);
+    return $config;
+  }
+  
+  /**
+   * @depends testCreate
+   * @covers \Trypta\Liquid\Configuration::set
+   * @param Configuration $config
+   * @return Configuration
+   */
+  public function testSet(\Trypta\Liquid\Configuration $config)
+  {
+
     //  Set test configuration
-    $this->config->set('section_a.key_a.value_a', 'aaa');
-    $this->config->set('section_a.key_a.value_b', 'aab');
-    $this->config->set('section_a.key_b.value_a', 'aba');
-    $this->config->set('section_a.key_b.value_b', 'abb');
-    $this->config->set('section_b.key_a.value_a', 'baa');
-    $this->config->set('section_b.key_a.value_b', 'bab');
-    $this->config->set('section_b.key_b.value_a', 'bba');
-    $this->config->set('section_b.key_b.value_b', 'bbb');
+    $config->set('section_a.key_a.value_a', 'aaa');
+    $config->set('section_a.key_a.value_b', 'aab');
+    $config->set('section_a.key_b.value_a', 'aba');
+    $config->set('section_a.key_b.value_b', 'abb');
+    $config->set('section_b.key_a.value_a', 'baa');
+    $config->set('section_b.key_a.value_b', 'bab');
+    $config->set('section_b.key_b.value_a', 'bba');
+    $config->set('section_b.key_b.value_b', 'bbb');
     
+    $this->expectException('\InvalidArgumentException');
+    $config->set('section_a', array());
+    
+    $this->expectException('\InvalidArgumentException');
+    $config->set('section_a.key_a', null);
+    return $config;
+  }
+  
+  /**
+   * @depends testSet
+   * @covers \Trypta\Liquid\Configuration::save
+   * @param \Trypta\Liquid\Tests\Unit\Trypta\Liquid\Configuration $config
+   * @return \Trypta\Liquid\Tests\Unit\Trypta\Liquid\Configuration
+   */
+  public function testSave(\Trypta\Liquid\Configuration $config)
+  {
     //  Save configuration
-    $this->config->save();
-    
+    $config->save();
+    return $config;
+  }
+  
+  /**
+   * @depends testSave
+   * @covers \Trypta\Liquid\Configuration::get
+   * @covers \Trypta\Liquid\Configuration::load
+   * @param Configuration $config
+   * @return Configuration
+   */
+  public function testGet(\Trypta\Liquid\Configuration $config)
+  {
     $this->assertFileExists($this->configFile);
   
-    $config = new Configuration($this->configFile);
+    $configa = new Configuration($this->configFile);
+    $confia->load();
     
-    $this->assertEquals($this->config->get('section_a.key_a.value_a'), $config->get('section_a.key_a.value_a'));
-    $this->assertEquals($this->config->get('section_a.key_a.value_b'), $config->get('section_a.key_a.value_b'));
-    $this->assertEquals($this->config->get('section_a.key_b.value_a'), $config->get('section_a.key_b.value_a'));
-    $this->assertEquals($this->config->get('section_a.key_b.value_b'), $config->get('section_a.key_b.value_b'));
-    $this->assertEquals($this->config->get('section_b.key_a.value_a'), $config->get('section_b.key_a.value_a'));
-    $this->assertEquals($this->config->get('section_b.key_a.value_b'), $config->get('section_b.key_a.value_b'));
-    $this->assertEquals($this->config->get('section_b.key_b.value_a'), $config->get('section_b.key_b.value_a'));
-    $this->assertEquals($this->config->get('section_b.key_b.value_b'), $config->get('section_b.key_b.value_b'));
+    $assertEquals($config->get('section_a.key_a.value_a'), $configa->get('section_a.key_a.value_a'));
+    $assertEquals($config->get('section_a.key_a.value_b'), $configa->get('section_a.key_a.value_b'));
+    $assertEquals($config->get('section_a.key_b.value_a'), $configa->get('section_a.key_b.value_a'));
+    $assertEquals($config->get('section_a.key_b.value_b'), $configa->get('section_a.key_b.value_b'));
+    $assertEquals($config->get('section_b.key_a.value_a'), $configa->get('section_b.key_a.value_a'));
+    $assertEquals($config->get('section_b.key_a.value_b'), $configa->get('section_b.key_a.value_b'));
+    $assertEquals($config->get('section_b.key_b.value_a'), $configa->get('section_b.key_b.value_a'));
+    $assertEquals($config->get('section_b.key_b.value_b'), $configa->get('section_b.key_b.value_b'));    
+    $assertEquals($config->get('section_a.key_a'), $configa->get('section_a.key_a'));
+    $assertEquals($config->get('section_b'), $configa->get('section_b'));
+    
+    $this->expectException('\InvalidArgumentException');
+    $config->get('a.b.c.d');
+    return $config;
   }
+  
+  /**
+   * @depends testGet
+   * @covers \Trypta\Liquid\Configuration::reload
+   * @param Configuration $config
+   * @return Configuration
+   */
+  public function testReload(\Trypta\Liquid\Configuration $config)
+  {
+    $config->set('section_a.key_a.value_a', 'AAA');
+    
+    $this->assertEquals($config->get('section_a.key_a.value_a'), 'AAA');
+    
+    $config->reload();
+    
+    $this->assertEquals($config->get('section_a.key_a.value_a'), 'aaa');
+    
+    return $config;
+  }
+
   
 }

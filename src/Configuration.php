@@ -90,42 +90,12 @@ namespace Trypta\Liquid {
     }
 
     /**
-     * Destructor
-     *
-     * Calls the __shutdown method on destruction
-     *
-     * @access public
-     */
-    public function __destruct()
-    {
-      $this->__shutdown();
-    }
-
-    /**
-     * Shutdown method, called when the system is shutdown
-     *
-     * @access public
-     */
-    public function __shutdown()
-    {
-      if($this->requiresSave)
-      {
-        $this->save();
-      }
-    }
-
-    /**
-     * Reloads the configuration from disk, saves first if required
+     * Reloads the configuration from disk
      *
      * @access public
      */
     public function reload()
     {
-      if($this->requiresSave)
-      {
-        $this->save();
-      }
-
       $this->loaded = false;
       $this->load();
     }
@@ -151,7 +121,7 @@ namespace Trypta\Liquid {
 
             if(count($parts) != 2)
             {
-              throw new \RuntimeException('Invalid configuration depth: ' . $name . '.' . implode(".", $parts));
+              continue;
             }
 
             $a = array_shift($parts);
