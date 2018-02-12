@@ -42,6 +42,7 @@ class ConfigurationTest extends TestCase
   
   /**
    * @covers \Trypta\Liquid\Configuration::__construct
+   * @covers \Trypta\Liquid\Configuration::set
    */
   public function testCreate()
   {
@@ -49,18 +50,6 @@ class ConfigurationTest extends TestCase
     $config = new Configuration($this->configFile);
     
     $this->assertInstanceOf(\Trypta\Liquid\Configuration::class, $config);
-    
-    return $config;
-  }
-  
-  /**
-   * @depends testCreate
-   * @covers \Trypta\Liquid\Configuration::set
-   * @param Configuration $config
-   * @return Configuration
-   */
-  public function testSet(\Trypta\Liquid\Configuration $config)
-  {
 
     //  Set test configuration
     $config->set('section_a.key_a.value_a', 'aaa');
@@ -71,9 +60,10 @@ class ConfigurationTest extends TestCase
     $config->set('section_b.key_a.value_b', 'bab');
     $config->set('section_b.key_b.value_a', 'bba');
     $config->set('section_b.key_b.value_b', 'bbb');
+    
     return $config;
   }
-  
+
   /**
    * @depends testCreate
    * @covers \Trypta\Liquid\Configuration::set
@@ -91,7 +81,7 @@ class ConfigurationTest extends TestCase
   }
   
   /**
-   * @depends testSet
+   * @depends testCreate
    * @covers \Trypta\Liquid\Configuration::save
    * @param \Trypta\Liquid\Tests\Unit\Trypta\Liquid\Configuration $config
    * @return \Trypta\Liquid\Tests\Unit\Trypta\Liquid\Configuration
