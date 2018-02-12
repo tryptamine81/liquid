@@ -185,8 +185,8 @@ namespace Trypta\Liquid {
 
       foreach($this->data as $a => $section)
       {
-        $data[] = "[" . $name . "]";
-        foreach($section as $a => $subsection)
+        $data[] = "[" . $a . "]";
+        foreach($section as $b => $subsection)
         {
           foreach($subsection as $c => $value)
           {
