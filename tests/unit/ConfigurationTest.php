@@ -71,7 +71,17 @@ class ConfigurationTest extends TestCase
     $config->set('section_b.key_a.value_b', 'bab');
     $config->set('section_b.key_b.value_a', 'bba');
     $config->set('section_b.key_b.value_b', 'bbb');
-    
+    return $config;
+  }
+  
+  /**
+   * @depends testCreate
+   * @covers \Trypta\Liquid\Configuration::set
+   * @param Configuration $config
+   * @return Configuration
+   */
+  public function testSetExceptions(\Trypta\Liquid\Configuration $config)
+  {    
     $this->expectException('\InvalidArgumentException');
     $config->set('section_a', array());
     
@@ -90,6 +100,9 @@ class ConfigurationTest extends TestCase
   {
     //  Save configuration
     $config->save();
+    
+    $this->assertTrue(file_exists($this->configFile));
+    
     return $config;
   }
   
@@ -117,7 +130,18 @@ class ConfigurationTest extends TestCase
     $assertEquals($config->get('section_b.key_b.value_b'), $configa->get('section_b.key_b.value_b'));    
     $assertEquals($config->get('section_a.key_a'), $configa->get('section_a.key_a'));
     $assertEquals($config->get('section_b'), $configa->get('section_b'));
-    
+    return $config;
+  }
+  
+  /**
+   * @depends testGet
+   * @covers \Trypta\Liquid\Configuration::get
+   * @covers \Trypta\Liquid\Configuration::load
+   * @param Configuration $config
+   * @return Configuration
+   */
+  public function testGet(\Trypta\Liquid\Configuration $config)
+  {
     $this->expectException('\InvalidArgumentException');
     $config->get('a.b.c.d');
     return $config;
