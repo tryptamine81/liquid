@@ -254,6 +254,11 @@ namespace Trypta\Liquid {
             $b = count($parts) > 0 ? array_shift($parts) : false;
             $c = count($parts) > 0 ? array_shift($parts) : false;
 
+            if(!is_array($this->_data))
+            {
+              $this->_data = array();
+            }
+            
             if (!array_key_exists($a, $this->_data)) {
                 throw new \InvalidArgumentException('Configuration key does not exist: ' . $key);
             }
