@@ -17,9 +17,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
+
+/* ------------------------------------------------------------------------------------------- */
+
 /**
- * Describes an Environment object
- *
+ * Describes an Environment instance
+ * 
  * @since version 0.0.1
  * @author Sam Jones <jones at cityvinyl.co.uk>
  */
@@ -27,16 +30,34 @@ namespace Trypta\Liquid;
 
 defined('DS') ? : define('DS', DIRECTORY_SEPARATOR);
 
-use Logging\NullLogger as NullLogger;
-use Logging\DebugLogger as DebugLogger;
-use Logging\FileLoggerStorage as FileLoggerStorage;
-
 /**
- * Description of Environment
+ * Describes an Environment instance
  *
- * @package Liquid
+ * This class is the base environment class for a liquid application, all custom environment
+ * classes should extend this class. This class contains environment type and a system paths
+ * registry, it can be extended anyway you wish.
+ * 
+ * A static call method is provided to make calls to the single instance once initialised,
+ * however it does need to be passed a root path, a system path and a library  path when 
+ * initialised through either of the following two methods:
+ *  
+ *  $env = new \Trypta\Liquid\Environment($base_path, $system_path, $library_path);
+ *  $env = \Trypta\Liquid\Environment::getInstance($base_path, $system_path, $library_path);
+ * 
+ * The environment can only be instantiated once and will be registered when either of those
+ * methods are used for instantiation. After this, further attempts to instantiate with the 
+ * new keyword will result in a \RuntimeException being thrown. ::getInstance() will return 
+ * the singleton instance once instantiated.
+ * 
+ * @package Liquid PHP Application Framework
  * @subpackage Core
  * @category Environment
+ * @copyright (c) 2018, Sam Jones
+ * 
+ * @method null setEnvironmentType(string $type) Sets environment type on singleton instance
+ * @method string getEnvironmentType() Returns the environment type
+ * @method null setPath(string $id, string $path) Sets a system path by id
+ * @method string getPath(string $id) Gets a system path by id
  */
 class Environment
 {
@@ -82,14 +103,6 @@ class Environment
         self::PATH_CACHE => 'cache',
         self::PATH_BIN => 'bin'
     );
-    
-    /**
-     * System logger
-     *
-     * @access protected
-     * @var Psr\Log\LoggerInterface $logger
-     */
-    protected $logger = null;
 
     /**
      * Static environment access, calls associated method on singleton instance
@@ -187,10 +200,19 @@ class Environment
             throw new \InvalidArgumentException('Cannot set ' . $id . ' path after instantiation.');
         }
 
-        $this->paths[$id] = strstr($path, 0, 1) == DS ? $path : $this->paths[self::PATH_SYSTEM] . DS . $path;
+        $this->paths[$id] = strstr($path, 0, 1) == DS 
+                ? $path 
+                : $this->paths[self::PATH_SYSTEM] . DS . $path;
     }
     
-    
+    /**
+     * Returns a registered system path
+     * 
+     * @access public
+     * @param string $id
+     * @return string
+     * @throws \RuntimeException
+     */
     public function getPath($id)
     {
         if (!array_key_exists($id, $this->paths)) {
@@ -198,33 +220,5 @@ class Environment
         }
         return substr($this->paths[$id], 0, 1) == DS ? $this->paths[$id] : $this->paths[self::PATH_SYSTEM] . DS . $this->paths[$id];
     }
-    
-    /**
-     * Returns an environment logger
-     *
-     * @access public
-     * @return Psr\Log\LoggerInterface
-     */
-    public function getLogger()
-    {
-        if (is_null($this->logger)) {
-            switch ($this->type) {
-                case self::ENV_TESTING:
-                    
-                    break;
-                case self::ENV_STAGING:
-                    
-                    break;
-                case self::ENV_PRODUCTION:
-                    
-                    break;
-                case self::ENV_DEVELOPMENT:
-                default:
-                    $logfile = $this->getPath(self::PATH_LOGS) . DS . 'debug.log';
-                    $this->logger = new DebugLogger(new FileLoggerStorage($logfile));
-                    break;
-            }
-        }
-        return $this->logger;
-    }
+
 }

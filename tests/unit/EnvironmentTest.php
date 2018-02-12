@@ -27,7 +27,6 @@ class EnvironmentTest extends TestCase
     
     /**
      * @covers \Trypta\Liquid\Environment::__construct
-     * @covers \Trypta\Liquid\Environment::getInstance
      */
     public function testEnvironmentSingletonInstantiation()
     {
@@ -68,22 +67,5 @@ class EnvironmentTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $this->env->getPath('invalid');
     }
-    
-    /**
-     * @covers \Trypta\Liquid\Environment::getLogger
-     */
-    public function testGetLogger()
-    {
-        $this->env->setEnvironmentType(Environment::ENV_DEVELOPMENT);
-        //$this->assertEquals($this->env->getLogger(), null);
-        
-        $this->env->setEnvironmentType(Environment::ENV_STAGING);
-        $this->assertEquals($this->env->getLogger(), null);
-        
-        $this->env->setEnvironmentType(Environment::ENV_PRODUCTION);
-        $this->assertEquals($this->env->getLogger(), null);
-        
-        $this->env->setEnvironmentType(Environment::ENV_TESTING);
-        $this->assertEquals($this->env->getLogger(), null);
-    }
+
 }
