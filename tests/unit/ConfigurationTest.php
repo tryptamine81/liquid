@@ -140,7 +140,7 @@ class ConfigurationTest extends TestCase
    * @param Configuration $config
    * @return Configuration
    */
-  public function testGet(\Trypta\Liquid\Configuration $config)
+  public function testGetExceptions(\Trypta\Liquid\Configuration $config)
   {
     $this->expectException('\InvalidArgumentException');
     $config->get('a.b.c.d');
