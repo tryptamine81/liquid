@@ -42,7 +42,7 @@ namespace Trypta\Liquid {
      * @access private
      * @var boolean $_requiresSave
      */
-    private $_requiresSave = false;
+    private $requiresSave = false;
 
     /**
      * True when the configuration has been read and parsed
@@ -50,7 +50,7 @@ namespace Trypta\Liquid {
      * @access private
      * @var boolean $_loaded
      */
-    private $_loaded = false;
+    private $loaded = false;
 
     /**
      * Configuration file path
@@ -58,7 +58,7 @@ namespace Trypta\Liquid {
      * @access private
      * @var string $_filename
      */
-    private $_filename = null;
+    private $filename = null;
 
     /**
      * Parsed configuration data
@@ -66,7 +66,7 @@ namespace Trypta\Liquid {
      * @access private
      * @var array $_data
      */
-    private $_data = null;
+    private $data = null;
 
     /**
      * Request constructor
@@ -82,7 +82,7 @@ namespace Trypta\Liquid {
         throw new \InvalidArgumentException('Configuration filename is required');
       }
 
-      $this->_filename = $filename;
+      $this->filename = $filename;
       if(file_exists($filename))
       {
         $this->load();
@@ -108,7 +108,7 @@ namespace Trypta\Liquid {
      */
     public function __shutdown()
     {
-      if($this->_requiresSave)
+      if($this->requiresSave)
       {
         $this->save();
       }
@@ -121,12 +121,12 @@ namespace Trypta\Liquid {
      */
     public function reload()
     {
-      if($this->_requiresSave)
+      if($this->requiresSave)
       {
         $this->save();
       }
 
-      $this->_loaded = false;
+      $this->loaded = false;
       $this->load();
     }
 
@@ -138,13 +138,13 @@ namespace Trypta\Liquid {
      */
     public function load()
     {
-      if(!$this->_loaded)
+      if(!$this->loaded)
       {
-        $data = parse_ini_file($this->_filename, true, INI_SCANNER_NORMAL);
+        $data = parse_ini_file($this->filename, true, INI_SCANNER_NORMAL);
 
         foreach($data as $name => $section)
         {
-          $this->_data[$name] = array();
+          $this->data[$name] = array();
           foreach($section as $key => $value)
           {
             $parts = explode(".", $key);
@@ -157,16 +157,16 @@ namespace Trypta\Liquid {
             $a = array_shift($parts);
             $b = array_shift($parts);
 
-            if(!array_key_exists($a, $this->_data[$name]))
+            if(!array_key_exists($a, $this->data[$name]))
             {
-              $this->_data[$name][$a] = array();
+              $this->data[$name][$a] = array();
             }
 
-            $this->_data[$name][$a][$b] = $value;
+            $this->data[$name][$a][$b] = $value;
           }
         }
 
-        $this->_loaded = true;
+        $this->loaded = true;
       }
     }
 
@@ -183,7 +183,7 @@ namespace Trypta\Liquid {
       $data[] = "; Liquid Framework Application Configuration File";
       $data[] = "";
 
-      foreach($this->_data as $a => $section)
+      foreach($this->data as $a => $section)
       {
         $data[] = "[" . $name . "]";
         foreach($section as $a => $subsection)
@@ -194,8 +194,8 @@ namespace Trypta\Liquid {
           }
         }
 
-        file_put_contents($this->_filename, $data);
-        $this->_requiresSave = false;
+        file_put_contents($this->filename, $data);
+        $this->requiresSave = false;
       }
     }
 
@@ -221,32 +221,32 @@ namespace Trypta\Liquid {
       $b = count($parts) > 0 ? array_shift($parts) : false;
       $c = count($parts) > 0 ? array_shift($parts) : false;
 
-      if(!array_key_exists($a, $this->_data))
+      if(!array_key_exists($a, $this->data))
       {
         throw new \InvalidArgumentException('Configuration key does not exist: ' . $key);
       }
 
       if(!$b)
       {
-        return $this->_data[$a];
+        return $this->data[$a];
       }
 
-      if(!array_key_exists($b, $this->_data[$a]))
+      if(!array_key_exists($b, $this->data[$a]))
       {
         throw new \InvalidArgumentException('Configuration key does not exist: ' . $key);
       }
 
       if(!$c)
       {
-        return $this->_data[$a][$b];
+        return $this->data[$a][$b];
       }
 
-      if(!array_key_exists($c, $this->_data[$a][$b]))
+      if(!array_key_exists($c, $this->data[$a][$b]))
       {
         throw new \InvalidArgumentException('Configuration key does not exist: ' . $key);
       }
 
-      return $this->_data[$a][$b][$c];
+      return $this->data[$a][$b][$c];
     }
 
     /**
@@ -271,16 +271,6 @@ namespace Trypta\Liquid {
       $b = count($parts) > 0 ? array_shift($parts) : false;
       $c = count($parts) > 0 ? array_shift($parts) : false;
 
-      if(!is_array($this->_data))
-      {
-        $this->_data = array();
-      }
-
-      if(!array_key_exists($a, $this->_data))
-      {
-        $this->_data[$a] = array();
-      }
-
       if(!$b)
       {
         if(!is_array($value))
@@ -289,13 +279,8 @@ namespace Trypta\Liquid {
         }
         foreach($value as $k => $v)
         {
-          return $this->set($a . '.' . $k, $v);
+          $this->set($a . '.' . $k, $v);
         }
-      }
-
-      if(!array_key_exists($b, $this->_data[$a]))
-      {
-        $this->_data[$a][$b] = array();
       }
 
       if(!$c)
@@ -306,16 +291,30 @@ namespace Trypta\Liquid {
         }
         foreach($value as $k => $v)
         {
-          return $this->set($a . '.' . $b . '.' . $k, $v);
+          $this->set($a . '.' . $b . '.' . $k, $v);
         }
       }
 
-      if(is_array($value))
+      if($a && $b && $c)
       {
-        throw new \InvalidArgumentException('3rd level configiration data cannot be an array');
+        if(!is_array($this->data))
+        {
+          $this->data = array();
+        }
+
+        if(!array_key_exists($a, $this->data))
+        {
+          $this->data[$a] = array();
+        }
+
+        if(!array_key_exists($b, $this->data[$a]))
+        {
+          $this->data[$a][$b] = array();
+        }
+        
+        $this->requiresSave = $this->data[$a][$b][$c] == $value ? false : true;
+        $this->data[$a][$b][$c] = $value;
       }
-      $this->requiresSave = $this->_data[$a][$b][$c] == $value ? false : true;
-      $this->_data[$a][$b][$c] = $value;
     }
 
   }
