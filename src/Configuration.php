@@ -312,7 +312,7 @@ namespace Trypta\Liquid {
           $this->data[$a][$b] = array();
         }
         
-        $this->requiresSave = $this->data[$a][$b][$c] == $value ? false : true;
+        $this->requiresSave = array_key_exists($c, $this->data[$a][$b]) && $this->data[$a][$b][$c] == $value ? false : true;
         $this->data[$a][$b][$c] = $value;
       }
     }
