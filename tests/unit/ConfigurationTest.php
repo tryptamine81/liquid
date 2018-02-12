@@ -47,6 +47,9 @@ class ConfigurationTest extends TestCase
   {
     //  Create configuration object
     $config = new Configuration($this->configFile);
+    
+    $this->assertInstanceOf(\Trypta\Liquid\Configuration::class, $config);
+    
     return $config;
   }
   
