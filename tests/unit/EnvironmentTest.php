@@ -22,18 +22,21 @@ class EnvironmentTest extends TestCase
     
     public function setUp()
     {
-        $this->env = Environment::getInstance();
-    }
-    
-    
-    public function testEnvironmentSingletonInstantiation()
-    {
-        $this->assertEquals(get_class($this->env), 'Trypta\Liquid\Environment');
+        $this->env = Environment::getInstance();        
     }
     
     /**
-     * @covers Trypta\Liquid\Environment::setEnvironmentType
-     * @covers Trypta\Liquid\Environment::getEnvironmentType
+     * @covers \Trypta\Liquid\Environment::__construct
+     * @covers \Trypta\Liquid\Environment::getInstance
+     */
+    public function testEnvironmentSingletonInstantiation()
+    {
+        $this->assertInstanceOf(\Trypta\Liquid\Environment::class, $this->env);
+    }
+    
+    /**
+     * @covers \Trypta\Liquid\Environment::setEnvironmentType
+     * @covers \Trypta\Liquid\Environment::getEnvironmentType
      */
     public function testEnvironmentType()
     {
@@ -51,8 +54,8 @@ class EnvironmentTest extends TestCase
     }
     
     /**
-     * @covers Trypta\Liquid\Environment::getPath
-     * @covers Trypta\Liquid\Environment::setPath
+     * @covers \Trypta\Liquid\Environment::getPath
+     * @covers \Trypta\Liquid\Environment::setPath
      */
     public function testPaths()
     {
@@ -64,5 +67,23 @@ class EnvironmentTest extends TestCase
         
         $this->expectException(\RuntimeException::class);
         $this->env->getPath('invalid');
+    }
+    
+    /**
+     * @covers \Trypta\Liquid\Environment::getLogger
+     */
+    public function testGetLogger()
+    {
+        $this->env->setEnvironmentType(Environment::ENV_DEVELOPMENT);
+        //$this->assertEquals($this->env->getLogger(), null);
+        
+        $this->env->setEnvironmentType(Environment::ENV_STAGING);
+        $this->assertEquals($this->env->getLogger(), null);
+        
+        $this->env->setEnvironmentType(Environment::ENV_PRODUCTION);
+        $this->assertEquals($this->env->getLogger(), null);
+        
+        $this->env->setEnvironmentType(Environment::ENV_TESTING);
+        $this->assertEquals($this->env->getLogger(), null);
     }
 }
