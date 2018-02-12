@@ -180,7 +180,7 @@ namespace Trypta\Liquid {
       $data = array();
       $data[] = "; <?php die; ?>";
       $data[] = "; ";
-      $data[] = "; Liquid Framework Application Configuration File";
+      $data[] = "; Liquid PHP Application Framework Configuration File";
       $data[] = "";
 
       foreach($this->data as $a => $section)
@@ -194,7 +194,7 @@ namespace Trypta\Liquid {
           }
         }
 
-        file_put_contents($this->filename, $data);
+        file_put_contents($this->filename, implode("\r\n", $data));
         $this->requiresSave = false;
       }
     }
