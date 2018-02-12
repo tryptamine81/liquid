@@ -25,7 +25,7 @@ class ConfigurationTest extends TestCase
   {
     if(file_exists($this->configFile))
     {
-      unlink($this->configFile);
+      //unlink($this->configFile);
     }
   }
   
@@ -36,7 +36,7 @@ class ConfigurationTest extends TestCase
   {
     if(file_exists($this->configFile))
     {
-      unlink($this->configFile);
+      //unlink($this->configFile);
     }
   }
   
@@ -91,7 +91,7 @@ class ConfigurationTest extends TestCase
     //  Save configuration
     $config->save();
     
-    $this->assertTrue(file_exists($this->configFile));
+    $this->assertFileExists($this->configFile);
     
     return $config;
   }
